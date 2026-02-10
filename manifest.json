@@ -1,0 +1,16 @@
+{
+  "name": "is_fine app",
+  "short_name": "is_fine",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#5A0F2E",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/337/337946.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
