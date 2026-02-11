@@ -1,222 +1,182 @@
 import streamlit as st
+import sqlite3
+import hashlib
 import os
+import base64
+from PyPDF2 import PdfReader
 
 # ================= CONFIG =================
 APP_NAME = "IS_FINE"
-EMAIL = "adishaikh776@gmail.com"
+DB_NAME = "app.db"
+EXAM_FOLDER = "exam_papers"
+os.makedirs(EXAM_FOLDER, exist_ok=True)
 
-st.set_page_config(page_title=APP_NAME, layout="wide")
+# ================= DATABASE SETUP =================
+conn = sqlite3.connect(DB_NAME, check_same_thread=False)
+cursor = conn.cursor()
 
-# Hide Streamlit default
-st.markdown("""
-<style>
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-header {visibility:hidden;}
-</style>
-""", unsafe_allow_html=True)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT
+)
+""")
 
-# ================= DUBAI PORTAL CSS =================
-st.markdown("""
-<style>
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS scores(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT,
+    score INTEGER
+)
+""")
 
-body {
-    background: #F5F7FA;
-    font-family: 'Segoe UI', sans-serif;
-}
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS analytics(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event TEXT
+)
+""")
+conn.commit()
 
-/* HEADER BAR */
-.topbar {
-    background: #5C0632;
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-}
+# ================= HELPERS =================
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
-.logo {
-    font-size: 22px;
-    font-weight: bold;
-}
+def add_analytics(event):
+    cursor.execute("INSERT INTO analytics(event) VALUES(?)", (event,))
+    conn.commit()
 
-.lang-toggle {
-    background: white;
-    color: #5C0632;
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-weight: 600;
-}
+# ================= SESSION =================
+if "user" not in st.session_state:
+    st.session_state.user = None
+if "lang" not in st.session_state:
+    st.session_state.lang = "EN"
 
-/* PAGE TITLE */
-.header {
-    text-align: center;
-    margin: 40px 0;
-}
+# ================= LANGUAGE =================
+def t(en, ar):
+    return en if st.session_state.lang == "EN" else ar
 
-.header h1 {
-    font-size: 40px;
-    color: #5C0632;
-}
+# ================= UI =================
+st.title(APP_NAME)
 
-.header p {
-    color: #555;
-}
-
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    max-width: 1000px;
-    margin: auto;
-}
-
-@media(max-width: 768px){
-    .grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* CARD */
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 30px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-/* LIVE BORDER ANIMATION */
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 3px;
-    border-radius: 18px;
-    background: linear-gradient(90deg, #5C0632, #9E2956, #5C0632);
-    background-size: 300% 300%;
-    animation: borderMove 3s linear infinite;
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
-}
-
-@keyframes borderMove {
-    0% {background-position: 0% 50%;}
-    100% {background-position: 100% 50%;}
-}
-
-.card:hover {
-    background: #FAF1F6;
-    transform: translateY(-6px);
-    transition: 0.3s;
-}
-
-.icon {
-    font-size: 38px;
-    margin-bottom: 10px;
-    color: #5C0632;
-}
-
-.title {
-    font-weight: 600;
-    font-size: 16px;
-    color: #5C0632;
-}
-
-/* EMAIL */
-.email {
-    text-align: center;
-    margin: 60px 0 20px;
-    color: #5C0632;
-    font-weight: 600;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
-# ================= HEADER =================
-st.markdown("""
-<div class="topbar">
-    <div class="logo">🇦🇪 Dubai Portal - IS_FINE</div>
-    <div class="lang-toggle">EN | AR</div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown(f"""
-<div class="header">
-    <h1>{APP_NAME}</h1>
-    <p>Created by Bilal Shaikh App</p>
-</div>
-""", unsafe_allow_html=True)
-
-# ================= GRID =================
-col1, col2, col3 = st.columns(3)
-col4, col5, col6 = st.columns(3)
-
-with col1:
-    if st.button("🖼 Image to PDF", use_container_width=True):
-        st.write("Image to PDF Page")
-
+col1, col2 = st.columns([6,1])
 with col2:
-    if st.button("📄 Past Exam Papers", use_container_width=True):
-        st.write("Exam Papers Page")
+    if st.button("EN / AR"):
+        st.session_state.lang = "AR" if st.session_state.lang=="EN" else "EN"
 
-with col3:
-    with st.expander("📊 Analytics Dashboard"):
-        st.metric("Visitors", "1,245")
-        st.metric("Downloads", "320")
+# ================= AUTH =================
+if st.session_state.user is None:
 
-with col4:
-    if st.button("🔐 Secret File", use_container_width=True):
-        st.write("Secret File Section")
+    option = st.selectbox("Select", ["Login","Register"])
 
-with col5:
-    if st.button("🧠 Test Yourself", use_container_width=True):
-        st.session_state.page = "test"
+    username = st.text_input(t("Username","اسم المستخدم"))
+    password = st.text_input(t("Password","كلمة المرور"), type="password")
 
-with col6:
-    st.empty()
+    if option == "Register":
+        if st.button("Register"):
+            try:
+                cursor.execute("INSERT INTO users(username,password) VALUES(?,?)",
+                               (username, hash_password(password)))
+                conn.commit()
+                st.success("Registered Successfully")
+            except:
+                st.error("User already exists")
 
-# ================= TEST YOURSELF SECTION =================
-if "page" in st.session_state and st.session_state.page == "test":
+    if option == "Login":
+        if st.button("Login"):
+            cursor.execute("SELECT * FROM users WHERE username=? AND password=?",
+                           (username, hash_password(password)))
+            if cursor.fetchone():
+                st.session_state.user = username
+                st.success("Logged In")
+                st.rerun()
+            else:
+                st.error("Invalid credentials")
 
-    st.subheader("🧠 Aptitude Test")
+else:
 
-    questions = [
-        ("2 + 2 = ?", ["3","4","5"], "4"),
-        ("5 x 3 = ?", ["15","10","20"], "15"),
-        ("Square root of 16?", ["2","4","8"], "4"),
-        ("10 - 7 = ?", ["1","2","3"], "3"),
-        ("6 / 2 = ?", ["2","3","4"], "3"),
-        ("9 + 1 = ?", ["10","11","12"], "10"),
-        ("8 x 2 = ?", ["14","16","18"], "16"),
-        ("12 / 4 = ?", ["2","3","4"], "3"),
-        ("7 + 5 = ?", ["11","12","13"], "12"),
-        ("15 - 5 = ?", ["5","10","15"], "10"),
-    ]
+    st.success(f"Welcome {st.session_state.user}")
 
-    score = 0
-    answers = []
+    menu = st.selectbox("Menu",
+                        [t("Dashboard","لوحة التحكم"),
+                         t("Test Yourself","اختبر نفسك"),
+                         t("Exam Papers","أوراق الامتحان"),
+                         t("Logout","تسجيل الخروج")])
 
-    for i, (q, options, correct) in enumerate(questions):
-        ans = st.radio(q, options, key=i)
-        answers.append((ans, correct))
+    # ================= DASHBOARD =================
+    if menu == t("Dashboard","لوحة التحكم"):
+        st.header(t("Analytics Dashboard","لوحة التحليلات"))
 
-    if st.button("Submit Test"):
-        for ans, correct in answers:
-            if ans == correct:
-                score += 1
-        st.success(f"Your Score: {score}/10")
+        cursor.execute("SELECT COUNT(*) FROM analytics")
+        visits = cursor.fetchone()[0]
 
-# ================= EMAIL =================
-st.markdown(f"""
-<div class="email">
-📧 Contact: {EMAIL}
-</div>
-""", unsafe_allow_html=True)
+        cursor.execute("SELECT COUNT(*) FROM scores")
+        tests = cursor.fetchone()[0]
+
+        st.metric("Total Actions", visits)
+        st.metric("Total Tests Taken", tests)
+
+    # ================= TEST =================
+    if menu == t("Test Yourself","اختبر نفسك"):
+
+        questions = [
+            ("2 + 2 ?", ["3","4","5"], "4"),
+            ("5 x 3 ?", ["10","15","20"], "15"),
+            ("10 - 6 ?", ["3","4","5"], "4"),
+            ("9 + 1 ?", ["10","11","12"], "10"),
+            ("12 / 4 ?", ["2","3","4"], "3"),
+            ("6 x 2 ?", ["10","12","14"], "12"),
+            ("15 - 5 ?", ["5","10","15"], "10"),
+            ("8 + 7 ?", ["14","15","16"], "15"),
+            ("9 x 1 ?", ["9","8","7"], "9"),
+            ("20 / 5 ?", ["2","4","6"], "4"),
+        ]
+
+        score = 0
+        answers = []
+
+        for i,(q,options,correct) in enumerate(questions):
+            ans = st.radio(q, options, key=i)
+            answers.append((ans,correct))
+
+        if st.button("Submit"):
+            for ans,correct in answers:
+                if ans == correct:
+                    score += 1
+
+            cursor.execute("INSERT INTO scores(username,score) VALUES(?,?)",
+                           (st.session_state.user,score))
+            conn.commit()
+
+            add_analytics("Test Taken")
+
+            st.success(f"Score: {score}/10")
+
+    # ================= EXAM PAPERS =================
+    if menu == t("Exam Papers","أوراق الامتحان"):
+
+        pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.endswith(".pdf")]
+
+        for pdf in pdfs:
+            st.subheader(pdf)
+
+            path = os.path.join(EXAM_FOLDER,pdf)
+            with open(path,"rb") as f:
+                pdf_bytes = f.read()
+
+            # REAL PDF VIEWER
+            base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
+            pdf_display = f"""
+            <iframe src="data:application/pdf;base64,{base64_pdf}"
+            width="100%" height="500"></iframe>
+            """
+            st.markdown(pdf_display, unsafe_allow_html=True)
+
+            if st.button("Download "+pdf):
+                add_analytics("PDF Download")
+
+    # ================= LOGOUT =================
+    if menu == t("Logout","تسجيل الخروج"):
+        st.session_state.user = None
+        st.rerun()
