@@ -1,8 +1,20 @@
 import streamlit as st
+from PIL import Image
+from fpdf import FPDF
+import os
+import base64
 
-APP_NAME = "IS_FINE"
+APP_NAME = "UNI-FIRE"
 EMAIL = "adishaikh776@gmail.com"
+EXAM_FOLDER = "exam_papers"
 
+os.makedirs(EXAM_FOLDER, exist_ok=True)
+
+# ================= SESSION =================
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
+# ================= PAGE CONFIG =================
 st.set_page_config(
     page_title=APP_NAME,
     page_icon="📘",
@@ -10,7 +22,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Hide default Streamlit header/footer
+# Hide Streamlit header/footer
 st.markdown("""
 <style>
 #MainMenu {visibility: hidden;}
@@ -22,14 +34,11 @@ header {visibility: hidden;}
 # ================= DUBAI STYLE CSS =================
 st.markdown("""
 <style>
-
-/* Background */
 body {
     background: #F4F6F9;
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Header */
 .header {
     text-align: center;
     margin-top: 40px;
@@ -48,53 +57,11 @@ body {
     margin-top: 8px;
 }
 
-/* Grid Layout */
 .card-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
     max-width: 900px;
     margin: auto;
 }
 
-/* Mobile Stack */
-@media (max-width: 768px) {
-    .card-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Card Style */
-.card {
-    background: white;
-    border: 2px solid #1C6E8C;
-    border-radius: 18px;
-    padding: 30px;
-    text-align: center;
-    transition: 0.3s ease;
-    cursor: pointer;
-}
-
-.card:hover {
-    background: #EAF3F7;
-    transform: translateY(-6px);
-}
-
-/* Icon */
-.icon {
-    font-size: 42px;
-    margin-bottom: 15px;
-    color: #1C6E8C;
-}
-
-/* Text */
-.card-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1C6E8C;
-}
-
-/* Email */
 .email {
     text-align: center;
     margin-top: 60px;
@@ -102,36 +69,108 @@ body {
     color: #1C6E8C;
     font-weight: 500;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
-# ================= HEADER =================
-st.markdown(f"""
-<div class="header">
-    <h1>{APP_NAME}</h1>
-    <p>Created by Bilal Shaikh App</p>
-</div>
-""", unsafe_allow_html=True)
+# ================= HOME =================
+if st.session_state.page == "home":
 
-# ================= CARD GRID =================
-st.markdown('<div class="card-container">', unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="header">
+        <h1>{APP_NAME}</h1>
+        <p>Created by Bilal Shaikh App</p>
+    </div>
+    """, unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
 
-with col1:
-    if st.button("🖼 Image to PDF", use_container_width=True):
-        st.session_state.page = "convert"
+    with col1:
+        if st.button("🖼 Image to PDF", use_container_width=True):
+            st.session_state.page = "convert"
 
-with col2:
-    if st.button("📄 Past Exam Papers", use_container_width=True):
-        st.session_state.page = "exam"
+    with col2:
+        if st.button("📄 Past Exam Papers", use_container_width=True):
+            st.session_state.page = "exam"
 
-with col3:
-    if st.button("📊 Analytics Dashboard", use_container_width=True):
-        st.session_state.page = "analytics"
+    with col3:
+        if st.button("📊 Analytics Dashboard", use_container_width=True):
+            st.session_state.page = "analytics"
 
-st.markdown('</div>', unsafe_allow_html=True)
+# ================= IMAGE TO PDF =================
+elif st.session_state.page == "convert":
+
+    st.header("🖼 Image to PDF Converter")
+
+    images = st.file_uploader(
+        "Upload JPG / PNG images",
+        type=["jpg", "jpeg", "png"],
+        accept_multiple_files=True
+    )
+
+    if images:
+        pdf = FPDF()
+
+        for img in images:
+            image = Image.open(img).convert("RGB")
+            temp_path = f"temp_{img.name}"
+            image.save(temp_path)
+
+            pdf.add_page()
+            pdf.image(temp_path, x=10, y=10, w=190)
+            os.remove(temp_path)
+
+        pdf.output("images_to_pdf.pdf")
+
+        with open("images_to_pdf.pdf", "rb") as f:
+            st.download_button(
+                "⬇️ Download PDF",
+                f,
+                file_name="images_to_pdf.pdf",
+                use_container_width=True
+            )
+
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+
+# ================= EXAM PAPERS =================
+elif st.session_state.page == "exam":
+
+    st.header("📄 Past Exam Papers")
+
+    pdf_files = [f for f in os.listdir(EXAM_FOLDER) if f.lower().endswith(".pdf")]
+
+    if not pdf_files:
+        st.info("No exam papers available.")
+    else:
+        for pdf in pdf_files:
+            st.subheader(pdf)
+
+            path = os.path.join(EXAM_FOLDER, pdf)
+            with open(path, "rb") as f:
+                pdf_bytes = f.read()
+
+            base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
+            pdf_display = f"""
+            <iframe src="data:application/pdf;base64,{base64_pdf}"
+            width="100%" height="500"></iframe>
+            """
+            st.markdown(pdf_display, unsafe_allow_html=True)
+
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+
+# ================= ANALYTICS =================
+elif st.session_state.page == "analytics":
+
+    st.header("📊 Analytics Dashboard")
+
+    total_pdfs = len([f for f in os.listdir(EXAM_FOLDER) if f.endswith(".pdf")])
+
+    st.metric("Total Uploaded PDFs", total_pdfs)
+    st.metric("App Version", "1.0")
+
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
 
 # ================= EMAIL =================
 st.markdown(f"""
