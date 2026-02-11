@@ -4,7 +4,7 @@ from fpdf import FPDF
 import os
 import base64
 
-APP_NAME = "UNI-FIRE"
+APP_NAME = "UNI-FIREEE"
 EMAIL = "adishaikh776@gmail.com"
 EXAM_FOLDER = "exam_papers"
 
@@ -78,7 +78,7 @@ if st.session_state.page == "home":
     st.markdown(f"""
     <div class="header">
         <h1>{APP_NAME}</h1>
-        <p>Created by Bilal Shaikh App</p>
+        <p>Created by Bilal Shaikh</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -178,3 +178,4 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
