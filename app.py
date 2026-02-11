@@ -1,10 +1,13 @@
 import streamlit as st
 import os
-from PIL import Image
+import time
+import base64
 from fpdf import FPDF
+from PIL import Image
+from PyPDF2 import PdfReader
 
 # ================= CONFIG =================
-APP_NAME = "IS_FINE APP"
+APP_NAME = "IS_FINE"
 ADMIN_PASSWORD = "admin123"
 EXAM_FOLDER = "exam_papers"
 WHATSAPP_LINK = "https://wa.me/918999932770"
@@ -16,51 +19,83 @@ if "page" not in st.session_state:
     st.session_state.page = "home"
 if "admin_logged" not in st.session_state:
     st.session_state.admin_logged = False
+if "analytics" not in st.session_state:
+    st.session_state.analytics = {"downloads": 0}
 
 # ================= PAGE CONFIG =================
 st.set_page_config(page_title=APP_NAME, page_icon="💎", layout="wide")
 
-# ================= STYLE =================
+# ================= SPLASH ICON ANIMATION =================
+if "splash" not in st.session_state:
+    st.session_state.splash = True
+
+if st.session_state.splash:
+    st.markdown("""
+    <div style="text-align:center; margin-top:200px;">
+        <div style="font-size:70px; animation:spin 2s linear infinite;">💎</div>
+        <h1>IS_FINE</h1>
+    </div>
+    <style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    time.sleep(2)
+    st.session_state.splash = False
+    st.rerun()
+
+# ================= GLOBAL STYLE =================
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(180deg, #F8F5F2, #EFE9E3);
-    color: #3A0F1D;
+    background: linear-gradient(180deg, #0D0F1A, #12162B);
+    color: white;
+    overflow-x: hidden;
 }
 
 .header {
-    background: linear-gradient(90deg, #5A0F2E, #7A1B3F);
-    padding: 25px;
-    border-radius: 18px;
+    text-align:center;
+    margin-bottom: 20px;
+    animation: slideDown 0.6s ease;
+}
+
+@keyframes slideDown {
+    from {opacity:0; transform: translateY(-40px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+.page-transition {
+    animation: slidePage 0.5s ease;
+}
+
+@keyframes slidePage {
+    from {opacity:0; transform: translateX(40px);}
+    to {opacity:1; transform: translateX(0);}
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #111428;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+    border-top: 2px solid #D4AF37;
+}
+
+.nav-btn {
+    color: #D4AF37;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.nav-btn:hover {
     color: white;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-button {
-    border-radius: 16px !important;
-    border: 2px solid #D4AF37 !important;
-    background: white !important;
-    color: #5A0F2E !important;
-    font-weight: 600 !important;
-    padding: 15px !important;
-}
-
-.pdf-card {
-    background: white;
-    border: 2px solid #D4AF37;
-    border-radius: 16px;
-    padding: 15px;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.footer {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 14px;
-    color: #7A1B3F;
-    font-weight: 600;
+    transform: scale(1.1);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -68,129 +103,137 @@ button {
 # ================= HEADER =================
 st.markdown(f"""
 <div class="header">
-    <h1>{APP_NAME}</h1>
-    <p>Professional File Manager</p>
+<h1>{APP_NAME}</h1>
+<p>Created by Bilal Shaikh App</p>
 </div>
 """, unsafe_allow_html=True)
 
+# ================= LOADING SPINNER =================
+def loading():
+    with st.spinner("Loading..."):
+        time.sleep(0.6)
+
 # ================= HOME =================
 if st.session_state.page == "home":
+    st.markdown('<div class="page-transition">', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
+    if st.button("🖼 Image to PDF"):
+        loading()
+        st.session_state.page = "convert"
 
-    with col1:
-        if st.button("🖼️ Image to PDF", use_container_width=True):
-            st.session_state.page = "convert"
+    if st.button("📄 Past Exam Papers"):
+        loading()
+        st.session_state.page = "exam"
 
-        if st.button("📄 Past Exam Papers", use_container_width=True):
-            st.session_state.page = "exam"
+    if st.button("📊 Analytics Dashboard"):
+        loading()
+        st.session_state.page = "analytics"
 
-    with col2:
-        if st.button("🔐 Admin Panel", use_container_width=True):
-            st.session_state.page = "admin"
+    if st.button("🔐 Admin Panel"):
+        loading()
+        st.session_state.page = "admin"
 
-        if st.button("➕ ADD NEW", use_container_width=True):
-            st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})")
+    if st.button("➕ Add New"):
+        st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})")
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ================= IMAGE TO PDF =================
 elif st.session_state.page == "convert":
+    st.markdown('<div class="page-transition">', unsafe_allow_html=True)
 
-    st.header("🖼️ Image to PDF Converter")
-
-    images = st.file_uploader(
-        "Upload images",
-        type=["jpg", "jpeg", "png"],
-        accept_multiple_files=True
-    )
-
-    rotation = st.selectbox("Rotate Pages", [0, 90, 180, 270])
+    images = st.file_uploader("Upload Images", type=["jpg","png"], accept_multiple_files=True)
 
     if images:
         pdf = FPDF()
-
         for img in images:
             image = Image.open(img).convert("RGB")
-
-            if rotation != 0:
-                image = image.rotate(-rotation, expand=True)
-
-            temp_path = f"temp_{img.name}"
-            image.save(temp_path)
-
+            temp = f"temp_{img.name}"
+            image.save(temp)
             pdf.add_page()
-            pdf.image(temp_path, x=10, y=10, w=190)
-            os.remove(temp_path)
+            pdf.image(temp, x=10, y=10, w=190)
+            os.remove(temp)
 
-        pdf.output("images_to_pdf.pdf")
+        pdf.output("output.pdf")
 
-        with open("images_to_pdf.pdf", "rb") as f:
-            st.download_button("⬇️ Download PDF", f, "images_to_pdf.pdf", use_container_width=True)
+        with open("output.pdf","rb") as f:
+            st.download_button("Download PDF", f, "output.pdf")
 
-    if st.button("⬅️ Back"):
+    if st.button("⬅ Back"):
         st.session_state.page = "home"
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # ================= EXAM PAPERS =================
 elif st.session_state.page == "exam":
+    st.markdown('<div class="page-transition">', unsafe_allow_html=True)
 
-    st.header("📄 Past Exam Papers")
-
-    # AUTO DETECT PDFs
     pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.lower().endswith(".pdf")]
 
-    if not pdfs:
-        st.info("No exam papers available.")
-    else:
-        for pdf in pdfs:
-            st.markdown(f'<div class="pdf-card">{pdf}</div>', unsafe_allow_html=True)
+    search = st.text_input("🔍 Search PDF")
 
-            col1, col2 = st.columns([3, 1])
+    for pdf in pdfs:
+        if search.lower() in pdf.lower():
+            path = os.path.join(EXAM_FOLDER, pdf)
 
-            with col1:
-                with open(os.path.join(EXAM_FOLDER, pdf), "rb") as f:
-                    st.download_button(
-                        "⬇️ Download",
-                        f,
-                        pdf,
-                        key=f"download_{pdf}",
-                        use_container_width=True
-                    )
+            with open(path,"rb") as f:
+                pdf_bytes = f.read()
 
-            with col2:
-                if st.session_state.admin_logged:
-                    if st.button("🗑 Delete", key=f"delete_{pdf}"):
-                        os.remove(os.path.join(EXAM_FOLDER, pdf))
-                        st.success(f"{pdf} deleted")
-                        st.rerun()
+            st.subheader(pdf)
+            st.download_button("Download", pdf_bytes, pdf)
 
-    if st.button("⬅️ Back"):
+            st.session_state.analytics["downloads"] += 1
+
+            # SEARCH INSIDE PDF
+            reader = PdfReader(path)
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text() or ""
+
+            keyword = st.text_input(f"Search inside {pdf}", key=pdf)
+            if keyword and keyword.lower() in text.lower():
+                st.success("Keyword Found!")
+
+            if st.session_state.admin_logged:
+                if st.button("Delete", key="del_"+pdf):
+                    os.remove(path)
+                    st.rerun()
+
+    if st.button("⬅ Back"):
         st.session_state.page = "home"
 
-# ================= ADMIN PANEL =================
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ================= ANALYTICS =================
+elif st.session_state.page == "analytics":
+    st.markdown('<div class="page-transition">', unsafe_allow_html=True)
+
+    st.header("📊 Analytics Dashboard")
+    st.metric("Total Downloads", st.session_state.analytics["downloads"])
+    st.metric("Total PDFs", len(os.listdir(EXAM_FOLDER)))
+
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ================= ADMIN =================
 elif st.session_state.page == "admin":
 
-    st.header("🔐 Admin Panel")
-
     if not st.session_state.admin_logged:
-        password = st.text_input("Enter Admin Password", type="password")
-
+        pwd = st.text_input("Enter Password", type="password")
         if st.button("Login"):
-            if password == ADMIN_PASSWORD:
+            if pwd == ADMIN_PASSWORD:
                 st.session_state.admin_logged = True
-                st.success("Admin Logged In")
                 st.rerun()
             else:
                 st.error("Wrong Password")
-
     else:
-        st.success("Admin Mode Active")
-
-        uploaded_pdf = st.file_uploader("Upload New Exam PDF", type=["pdf"])
-
-        if uploaded_pdf:
-            save_path = os.path.join(EXAM_FOLDER, uploaded_pdf.name)
-            with open(save_path, "wb") as f:
-                f.write(uploaded_pdf.read())
-            st.success("PDF Uploaded Successfully")
+        uploaded = st.file_uploader("Upload PDF", type=["pdf"])
+        if uploaded:
+            with open(os.path.join(EXAM_FOLDER, uploaded.name),"wb") as f:
+                f.write(uploaded.read())
+            st.success("Uploaded")
             st.rerun()
 
         if st.button("Logout"):
@@ -198,12 +241,15 @@ elif st.session_state.page == "admin":
             st.session_state.page = "home"
             st.rerun()
 
-        if st.button("⬅️ Back"):
-            st.session_state.page = "home"
+    if st.button("⬅ Back"):
+        st.session_state.page = "home"
 
-# ================= FOOTER =================
+# ================= REAL BOTTOM NAV =================
 st.markdown("""
-<div class="footer">
-    Created by Bilal Shaikh
+<div class="bottom-nav">
+    <a class="nav-btn" href="?page=home">Home</a>
+    <a class="nav-btn" href="?page=exam">Papers</a>
+    <a class="nav-btn" href="?page=analytics">Analytics</a>
+    <a class="nav-btn" href="?page=admin">Admin</a>
 </div>
 """, unsafe_allow_html=True)
