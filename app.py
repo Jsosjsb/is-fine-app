@@ -1,10 +1,11 @@
 import streamlit as st
 
+# ================= CONFIG =================
 APP_NAME = "IS_FINE APP"
 
 st.set_page_config(page_title=APP_NAME, layout="wide")
 
-# Hide Streamlit header/footer
+# Hide Streamlit default UI
 st.markdown("""
 <style>
 #MainMenu {visibility:hidden;}
@@ -13,18 +14,18 @@ header {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# ================= EXACT UI STYLE =================
+# ================= EXACT DESIGN CSS =================
 st.markdown("""
 <style>
 
 body {
-    background: #F4F4F4;
+    background: #F3F3F3;
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* HEADER BANNER */
 .banner {
-    background: linear-gradient(90deg, #F3EDE6, #E8DFD4);
+    background: linear-gradient(90deg, #F2ECE4, #E7DED3);
     border: 3px solid #C6A46C;
     border-radius: 25px;
     padding: 40px;
@@ -32,8 +33,9 @@ body {
     position: relative;
 }
 
+/* TITLE */
 .banner-title {
-    font-size: 42px;
+    font-size: 44px;
     font-weight: 700;
     color: #5C0632;
 }
@@ -41,42 +43,50 @@ body {
 .banner-sub {
     font-size: 22px;
     color: #7A4C4C;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
-/* SEARCH ICON */
-.search-icon {
+/* SEARCH BOX */
+.search-box {
     position: absolute;
-    right: 30px;
-    top: 30px;
-    font-size: 28px;
-    color: #C6A46C;
+    right: 40px;
+    top: 40px;
+    background: white;
+    border-radius: 40px;
+    padding: 10px 25px;
+    border: 2px solid #C6A46C;
+    font-size: 16px;
+    color: #777;
+}
+
+/* GOLD WAVE LINE */
+.wave {
+    height: 4px;
+    background: linear-gradient(90deg, #C6A46C, #E4C58C);
+    margin-top: 25px;
+    border-radius: 2px;
 }
 
 /* CARD CONTAINER */
 .card-row {
     display: flex;
-    gap: 25px;
-    margin-top: 40px;
+    gap: 30px;
+    margin-top: 50px;
 }
 
 /* CARD STYLE */
 .card {
     flex: 1;
     border-radius: 25px;
-    padding: 40px;
+    padding: 50px 30px;
     text-align: center;
     border: 2px solid #C6A46C;
-    background: #EDEDED;
+    background: #ECECEC;
     transition: 0.3s;
     cursor: pointer;
 }
 
-.card:hover {
-    transform: translateY(-6px);
-}
-
-/* FIRST CARD ACTIVE */
+/* ACTIVE CARD */
 .card-active {
     background: linear-gradient(135deg, #7C2636, #5C0632);
     color: white;
@@ -85,20 +95,12 @@ body {
 
 .card-title {
     margin-top: 15px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
 }
 
-/* ADD NEW BUTTON */
-.add-new {
-    margin-top: 30px;
-    display: inline-block;
-    padding: 15px 30px;
-    border-radius: 15px;
-    border: 2px solid #C6A46C;
-    background: #EFE6DA;
-    font-size: 18px;
-    cursor: pointer;
+.card:hover {
+    transform: translateY(-8px);
 }
 
 </style>
@@ -107,36 +109,36 @@ body {
 # ================= HEADER =================
 st.markdown("""
 <div class="banner">
-    <div class="search-icon">🔍</div>
     <div class="banner-title">IS_FINE APP</div>
     <div class="banner-sub">Manage your files easily</div>
+    <div class="search-box">Search...</div>
+    <div class="wave"></div>
 </div>
 """, unsafe_allow_html=True)
 
 # ================= CARDS =================
-st.markdown('<div class="card-row">', unsafe_allow_html=True)
-
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    if st.button("🖼 Image to PDF", use_container_width=True):
-        st.write("Image to PDF Page")
+    st.markdown("""
+    <div class="card card-active">
+        <div style="font-size:40px;">🖼 ➜ 📄</div>
+        <div class="card-title">Image to PDF</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col2:
-    if st.button("📄 Past Exam Papers", use_container_width=True):
-        st.write("Past Exam Page")
+    st.markdown("""
+    <div class="card">
+        <div style="font-size:40px;">📑</div>
+        <div class="card-title">Past Exam Papers</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with col3:
-    if st.button("🔒 Secret Files", use_container_width=True):
-        st.write("Secret Files Page")
-
-with col4:
-    if st.button("➕ Add New", use_container_width=True):
-        st.write("Add New Page")
-
-st.markdown('</div>', unsafe_allow_html=True)
-
-# ================= BOTTOM ADD BUTTON =================
-st.markdown("""
-<div class="add-new">➕ Add New</div>
-""", unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card">
+        <div style="font-size:40px;">🔒</div>
+        <div class="card-title">Secret Files</div>
+    </div>
+    """, unsafe_allow_html=True)
