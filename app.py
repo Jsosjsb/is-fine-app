@@ -1,37 +1,10 @@
 import streamlit as st
 import os
-import sqlite3
-import base64
 
 # ================= CONFIG =================
 APP_NAME = "IS_FINE"
 EMAIL = "adishaikh776@gmail.com"
-EXAM_FOLDER = "exam_papers"
-DB_NAME = "app.db"
 
-os.makedirs(EXAM_FOLDER, exist_ok=True)
-
-# ================= DATABASE =================
-conn = sqlite3.connect(DB_NAME, check_same_thread=False)
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS scores(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    score INTEGER
-)
-""")
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS analytics(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    event TEXT
-)
-""")
-
-conn.commit()
-
-# ================= PAGE CONFIG =================
 st.set_page_config(page_title=APP_NAME, layout="wide")
 
 # Hide Streamlit default
@@ -43,43 +16,80 @@ header {visibility:hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# ================= RTL STYLE =================
+# ================= DUBAI PORTAL CSS =================
 st.markdown("""
 <style>
+
 body {
-    direction: rtl;
-    text-align: right;
-    font-family: 'Segoe UI', sans-serif;
     background: #F5F7FA;
+    font-family: 'Segoe UI', sans-serif;
 }
 
-/* Header */
+/* HEADER BAR */
+.topbar {
+    background: #5C0632;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.lang-toggle {
+    background: white;
+    color: #5C0632;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* PAGE TITLE */
 .header {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 30px;
+    margin: 40px 0;
 }
 
 .header h1 {
-    color: #5C0632;
     font-size: 40px;
+    color: #5C0632;
 }
 
 .header p {
     color: #555;
 }
 
-/* Cards */
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+@media(max-width: 768px){
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* CARD */
 .card {
     background: white;
     border-radius: 18px;
     padding: 30px;
-    margin-bottom: 20px;
+    text-align: center;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
 }
 
-/* Animated Mulberry Border */
+/* LIVE BORDER ANIMATION */
 .card::before {
     content: "";
     position: absolute;
@@ -101,109 +111,112 @@ body {
     100% {background-position: 100% 50%;}
 }
 
+.card:hover {
+    background: #FAF1F6;
+    transform: translateY(-6px);
+    transition: 0.3s;
+}
+
+.icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+    color: #5C0632;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #5C0632;
+}
+
+/* EMAIL */
 .email {
     text-align: center;
-    margin-top: 50px;
+    margin: 60px 0 20px;
     color: #5C0632;
-    font-weight: bold;
+    font-weight: 600;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
 # ================= HEADER =================
-st.markdown(f"""
-<div class="header">
-    <h1>{APP_NAME}</h1>
-    <p>تطبيق إدارة الملفات - تصميم بلال شيخ</p>
+st.markdown("""
+<div class="topbar">
+    <div class="logo">🇦🇪 Dubai Portal - IS_FINE</div>
+    <div class="lang-toggle">EN | AR</div>
 </div>
 """, unsafe_allow_html=True)
 
-# ================= MENU =================
-menu = st.selectbox(
-    "القائمة الرئيسية",
-    ["لوحة التحكم", "اختبر نفسك", "أوراق الامتحان"]
-)
+st.markdown(f"""
+<div class="header">
+    <h1>{APP_NAME}</h1>
+    <p>Created by Bilal Shaikh App</p>
+</div>
+""", unsafe_allow_html=True)
 
-# ================= DASHBOARD =================
-if menu == "لوحة التحكم":
+# ================= GRID =================
+col1, col2, col3 = st.columns(3)
+col4, col5, col6 = st.columns(3)
 
-    st.subheader("📊 لوحة التحليلات")
+with col1:
+    if st.button("🖼 Image to PDF", use_container_width=True):
+        st.write("Image to PDF Page")
 
-    cursor.execute("SELECT COUNT(*) FROM analytics")
-    visits = cursor.fetchone()[0]
+with col2:
+    if st.button("📄 Past Exam Papers", use_container_width=True):
+        st.write("Exam Papers Page")
 
-    cursor.execute("SELECT COUNT(*) FROM scores")
-    tests = cursor.fetchone()[0]
+with col3:
+    with st.expander("📊 Analytics Dashboard"):
+        st.metric("Visitors", "1,245")
+        st.metric("Downloads", "320")
 
-    st.metric("إجمالي العمليات", visits)
-    st.metric("عدد الاختبارات", tests)
+with col4:
+    if st.button("🔐 Secret File", use_container_width=True):
+        st.write("Secret File Section")
 
-# ================= TEST SECTION =================
-elif menu == "اختبر نفسك":
+with col5:
+    if st.button("🧠 Test Yourself", use_container_width=True):
+        st.session_state.page = "test"
 
-    st.subheader("🧠 اختبار القدرات")
+with col6:
+    st.empty()
+
+# ================= TEST YOURSELF SECTION =================
+if "page" in st.session_state and st.session_state.page == "test":
+
+    st.subheader("🧠 Aptitude Test")
 
     questions = [
-        ("كم حاصل 2 + 2؟", ["3","4","5"], "4"),
-        ("كم حاصل 5 × 3؟", ["10","15","20"], "15"),
-        ("كم حاصل 10 - 6؟", ["3","4","5"], "4"),
-        ("كم حاصل 9 + 1؟", ["10","11","12"], "10"),
-        ("كم حاصل 12 ÷ 4؟", ["2","3","4"], "3"),
-        ("كم حاصل 6 × 2؟", ["10","12","14"], "12"),
-        ("كم حاصل 15 - 5؟", ["5","10","15"], "10"),
-        ("كم حاصل 8 + 7؟", ["14","15","16"], "15"),
-        ("كم حاصل 9 × 1؟", ["9","8","7"], "9"),
-        ("كم حاصل 20 ÷ 5؟", ["2","4","6"], "4"),
+        ("2 + 2 = ?", ["3","4","5"], "4"),
+        ("5 x 3 = ?", ["15","10","20"], "15"),
+        ("Square root of 16?", ["2","4","8"], "4"),
+        ("10 - 7 = ?", ["1","2","3"], "3"),
+        ("6 / 2 = ?", ["2","3","4"], "3"),
+        ("9 + 1 = ?", ["10","11","12"], "10"),
+        ("8 x 2 = ?", ["14","16","18"], "16"),
+        ("12 / 4 = ?", ["2","3","4"], "3"),
+        ("7 + 5 = ?", ["11","12","13"], "12"),
+        ("15 - 5 = ?", ["5","10","15"], "10"),
     ]
 
     score = 0
     answers = []
 
-    for i,(q,options,correct) in enumerate(questions):
+    for i, (q, options, correct) in enumerate(questions):
         ans = st.radio(q, options, key=i)
-        answers.append((ans,correct))
+        answers.append((ans, correct))
 
-    if st.button("إرسال الإجابات"):
-        for ans,correct in answers:
+    if st.button("Submit Test"):
+        for ans, correct in answers:
             if ans == correct:
                 score += 1
-
-        cursor.execute("INSERT INTO scores(score) VALUES(?)",(score,))
-        conn.commit()
-
-        cursor.execute("INSERT INTO analytics(event) VALUES('Test Taken')")
-        conn.commit()
-
-        st.success(f"نتيجتك: {score} / 10")
-
-# ================= PDF SECTION =================
-elif menu == "أوراق الامتحان":
-
-    st.subheader("📄 أوراق الامتحانات")
-
-    pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.endswith(".pdf")]
-
-    for pdf in pdfs:
-        st.markdown(f"### {pdf}")
-
-        path = os.path.join(EXAM_FOLDER,pdf)
-        with open(path,"rb") as f:
-            pdf_bytes = f.read()
-
-        base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
-        pdf_display = f"""
-        <iframe src="data:application/pdf;base64,{base64_pdf}"
-        width="100%" height="600"></iframe>
-        """
-        st.markdown(pdf_display, unsafe_allow_html=True)
-
-        if st.button(f"تحميل {pdf}"):
-            cursor.execute("INSERT INTO analytics(event) VALUES('PDF Download')")
-            conn.commit()
+        st.success(f"Your Score: {score}/10")
 
 # ================= EMAIL =================
 st.markdown(f"""
 <div class="email">
-📧 البريد الإلكتروني: {EMAIL}
+📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
