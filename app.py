@@ -1,6 +1,6 @@
 import streamlit as st
 
-APP_NAME = "AL-توليد وصنع"
+APP_NAME = "AL-PROFESSIONAL MANAGER"
 EMAIL = "adishaikh776@gmail.com"
 
 st.set_page_config(
@@ -139,5 +139,6 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
