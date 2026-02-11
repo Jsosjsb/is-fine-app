@@ -1,32 +1,23 @@
 import streamlit as st
-import sqlite3
-import hashlib
 import os
+import sqlite3
 import base64
-from PyPDF2 import PdfReader
 
 # ================= CONFIG =================
 APP_NAME = "IS_FINE"
-DB_NAME = "app.db"
+EMAIL = "adishaikh776@gmail.com"
 EXAM_FOLDER = "exam_papers"
+DB_NAME = "app.db"
+
 os.makedirs(EXAM_FOLDER, exist_ok=True)
 
-# ================= DATABASE SETUP =================
+# ================= DATABASE =================
 conn = sqlite3.connect(DB_NAME, check_same_thread=False)
 cursor = conn.cursor()
 
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE,
-    password TEXT
-)
-""")
-
-cursor.execute("""
 CREATE TABLE IF NOT EXISTS scores(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT,
     score INTEGER
 )
 """)
@@ -37,146 +28,182 @@ CREATE TABLE IF NOT EXISTS analytics(
     event TEXT
 )
 """)
+
 conn.commit()
 
-# ================= HELPERS =================
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
+# ================= PAGE CONFIG =================
+st.set_page_config(page_title=APP_NAME, layout="wide")
 
-def add_analytics(event):
-    cursor.execute("INSERT INTO analytics(event) VALUES(?)", (event,))
-    conn.commit()
+# Hide Streamlit default
+st.markdown("""
+<style>
+#MainMenu {visibility:hidden;}
+footer {visibility:hidden;}
+header {visibility:hidden;}
+</style>
+""", unsafe_allow_html=True)
 
-# ================= SESSION =================
-if "user" not in st.session_state:
-    st.session_state.user = None
-if "lang" not in st.session_state:
-    st.session_state.lang = "EN"
+# ================= RTL STYLE =================
+st.markdown("""
+<style>
+body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', sans-serif;
+    background: #F5F7FA;
+}
 
-# ================= LANGUAGE =================
-def t(en, ar):
-    return en if st.session_state.lang == "EN" else ar
+/* Header */
+.header {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
 
-# ================= UI =================
-st.title(APP_NAME)
+.header h1 {
+    color: #5C0632;
+    font-size: 40px;
+}
 
-col1, col2 = st.columns([6,1])
-with col2:
-    if st.button("EN / AR"):
-        st.session_state.lang = "AR" if st.session_state.lang=="EN" else "EN"
+.header p {
+    color: #555;
+}
 
-# ================= AUTH =================
-if st.session_state.user is None:
+/* Cards */
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 30px;
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+}
 
-    option = st.selectbox("Select", ["Login","Register"])
+/* Animated Mulberry Border */
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 3px;
+    border-radius: 18px;
+    background: linear-gradient(90deg, #5C0632, #9E2956, #5C0632);
+    background-size: 300% 300%;
+    animation: borderMove 3s linear infinite;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+}
 
-    username = st.text_input(t("Username","اسم المستخدم"))
-    password = st.text_input(t("Password","كلمة المرور"), type="password")
+@keyframes borderMove {
+    0% {background-position: 0% 50%;}
+    100% {background-position: 100% 50%;}
+}
 
-    if option == "Register":
-        if st.button("Register"):
-            try:
-                cursor.execute("INSERT INTO users(username,password) VALUES(?,?)",
-                               (username, hash_password(password)))
-                conn.commit()
-                st.success("Registered Successfully")
-            except:
-                st.error("User already exists")
+.email {
+    text-align: center;
+    margin-top: 50px;
+    color: #5C0632;
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
 
-    if option == "Login":
-        if st.button("Login"):
-            cursor.execute("SELECT * FROM users WHERE username=? AND password=?",
-                           (username, hash_password(password)))
-            if cursor.fetchone():
-                st.session_state.user = username
-                st.success("Logged In")
-                st.rerun()
-            else:
-                st.error("Invalid credentials")
+# ================= HEADER =================
+st.markdown(f"""
+<div class="header">
+    <h1>{APP_NAME}</h1>
+    <p>تطبيق إدارة الملفات - تصميم بلال شيخ</p>
+</div>
+""", unsafe_allow_html=True)
 
-else:
+# ================= MENU =================
+menu = st.selectbox(
+    "القائمة الرئيسية",
+    ["لوحة التحكم", "اختبر نفسك", "أوراق الامتحان"]
+)
 
-    st.success(f"Welcome {st.session_state.user}")
+# ================= DASHBOARD =================
+if menu == "لوحة التحكم":
 
-    menu = st.selectbox("Menu",
-                        [t("Dashboard","لوحة التحكم"),
-                         t("Test Yourself","اختبر نفسك"),
-                         t("Exam Papers","أوراق الامتحان"),
-                         t("Logout","تسجيل الخروج")])
+    st.subheader("📊 لوحة التحليلات")
 
-    # ================= DASHBOARD =================
-    if menu == t("Dashboard","لوحة التحكم"):
-        st.header(t("Analytics Dashboard","لوحة التحليلات"))
+    cursor.execute("SELECT COUNT(*) FROM analytics")
+    visits = cursor.fetchone()[0]
 
-        cursor.execute("SELECT COUNT(*) FROM analytics")
-        visits = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM scores")
+    tests = cursor.fetchone()[0]
 
-        cursor.execute("SELECT COUNT(*) FROM scores")
-        tests = cursor.fetchone()[0]
+    st.metric("إجمالي العمليات", visits)
+    st.metric("عدد الاختبارات", tests)
 
-        st.metric("Total Actions", visits)
-        st.metric("Total Tests Taken", tests)
+# ================= TEST SECTION =================
+elif menu == "اختبر نفسك":
 
-    # ================= TEST =================
-    if menu == t("Test Yourself","اختبر نفسك"):
+    st.subheader("🧠 اختبار القدرات")
 
-        questions = [
-            ("2 + 2 ?", ["3","4","5"], "4"),
-            ("5 x 3 ?", ["10","15","20"], "15"),
-            ("10 - 6 ?", ["3","4","5"], "4"),
-            ("9 + 1 ?", ["10","11","12"], "10"),
-            ("12 / 4 ?", ["2","3","4"], "3"),
-            ("6 x 2 ?", ["10","12","14"], "12"),
-            ("15 - 5 ?", ["5","10","15"], "10"),
-            ("8 + 7 ?", ["14","15","16"], "15"),
-            ("9 x 1 ?", ["9","8","7"], "9"),
-            ("20 / 5 ?", ["2","4","6"], "4"),
-        ]
+    questions = [
+        ("كم حاصل 2 + 2؟", ["3","4","5"], "4"),
+        ("كم حاصل 5 × 3؟", ["10","15","20"], "15"),
+        ("كم حاصل 10 - 6؟", ["3","4","5"], "4"),
+        ("كم حاصل 9 + 1؟", ["10","11","12"], "10"),
+        ("كم حاصل 12 ÷ 4؟", ["2","3","4"], "3"),
+        ("كم حاصل 6 × 2؟", ["10","12","14"], "12"),
+        ("كم حاصل 15 - 5؟", ["5","10","15"], "10"),
+        ("كم حاصل 8 + 7؟", ["14","15","16"], "15"),
+        ("كم حاصل 9 × 1؟", ["9","8","7"], "9"),
+        ("كم حاصل 20 ÷ 5؟", ["2","4","6"], "4"),
+    ]
 
-        score = 0
-        answers = []
+    score = 0
+    answers = []
 
-        for i,(q,options,correct) in enumerate(questions):
-            ans = st.radio(q, options, key=i)
-            answers.append((ans,correct))
+    for i,(q,options,correct) in enumerate(questions):
+        ans = st.radio(q, options, key=i)
+        answers.append((ans,correct))
 
-        if st.button("Submit"):
-            for ans,correct in answers:
-                if ans == correct:
-                    score += 1
+    if st.button("إرسال الإجابات"):
+        for ans,correct in answers:
+            if ans == correct:
+                score += 1
 
-            cursor.execute("INSERT INTO scores(username,score) VALUES(?,?)",
-                           (st.session_state.user,score))
+        cursor.execute("INSERT INTO scores(score) VALUES(?)",(score,))
+        conn.commit()
+
+        cursor.execute("INSERT INTO analytics(event) VALUES('Test Taken')")
+        conn.commit()
+
+        st.success(f"نتيجتك: {score} / 10")
+
+# ================= PDF SECTION =================
+elif menu == "أوراق الامتحان":
+
+    st.subheader("📄 أوراق الامتحانات")
+
+    pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.endswith(".pdf")]
+
+    for pdf in pdfs:
+        st.markdown(f"### {pdf}")
+
+        path = os.path.join(EXAM_FOLDER,pdf)
+        with open(path,"rb") as f:
+            pdf_bytes = f.read()
+
+        base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
+        pdf_display = f"""
+        <iframe src="data:application/pdf;base64,{base64_pdf}"
+        width="100%" height="600"></iframe>
+        """
+        st.markdown(pdf_display, unsafe_allow_html=True)
+
+        if st.button(f"تحميل {pdf}"):
+            cursor.execute("INSERT INTO analytics(event) VALUES('PDF Download')")
             conn.commit()
 
-            add_analytics("Test Taken")
-
-            st.success(f"Score: {score}/10")
-
-    # ================= EXAM PAPERS =================
-    if menu == t("Exam Papers","أوراق الامتحان"):
-
-        pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.endswith(".pdf")]
-
-        for pdf in pdfs:
-            st.subheader(pdf)
-
-            path = os.path.join(EXAM_FOLDER,pdf)
-            with open(path,"rb") as f:
-                pdf_bytes = f.read()
-
-            # REAL PDF VIEWER
-            base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
-            pdf_display = f"""
-            <iframe src="data:application/pdf;base64,{base64_pdf}"
-            width="100%" height="500"></iframe>
-            """
-            st.markdown(pdf_display, unsafe_allow_html=True)
-
-            if st.button("Download "+pdf):
-                add_analytics("PDF Download")
-
-    # ================= LOGOUT =================
-    if menu == t("Logout","تسجيل الخروج"):
-        st.session_state.user = None
-        st.rerun()
+# ================= EMAIL =================
+st.markdown(f"""
+<div class="email">
+📧 البريد الإلكتروني: {EMAIL}
+</div>
+""", unsafe_allow_html=True)
