@@ -166,7 +166,7 @@ with col3:
         st.session_state.page = "analytics"
 
 with col4:
-    if st.button("🔐 Admin Panel", use_container_width=True):
+    if st.button("🔐 Secrect File", use_container_width=True):
         st.session_state.page = "admin"
 
 st.markdown('</div>', unsafe_allow_html=True)
@@ -177,4 +177,5 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
