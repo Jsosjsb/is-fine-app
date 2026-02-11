@@ -143,7 +143,7 @@ body {
 st.markdown(f"""
 <div class="header-box">
     <h1>{APP_NAME}</h1>
-    <div class="header-sub">Created by Bilal Shaikh App</div>
+    <div class="header-sub">Created by Bilal Shaikh</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -177,3 +177,4 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
