@@ -1,168 +1,112 @@
 import streamlit as st
-from PIL import Image
-from fpdf import FPDF
-import os
 
 # ================= CONFIG =================
-APP_NAME = "IS_FINE APP"
-EXAM_FOLDER = "exam_papers"
+APP_NAME = "IS_FINE"
 WHATSAPP_LINK = "https://wa.me/918999932770"
 
-os.makedirs(EXAM_FOLDER, exist_ok=True)
-
-# ================= SESSION =================
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-# ================= PAGE CONFIG =================
 st.set_page_config(
     page_title=APP_NAME,
     page_icon="💎",
-    layout="centered"
+    layout="wide"
 )
 
-# ================= LIGHT GOLD THEME =================
+# ================= QATAR STYLE HEADER =================
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(180deg, #FAFAFA, #F1F1F1);
-    color: #222;
+    background: linear-gradient(180deg, #F8F5F2, #EFE9E3);
+    color: #3A0F1D;
 }
 
-.main-title {
-    text-align: center;
+/* HEADER */
+.header-box {
+    background: linear-gradient(90deg, #5A0F2E, #7A1B3F);
+    padding: 30px;
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.header-title {
     font-size: 42px;
     font-weight: 800;
-    color: #5A0F2E;
+    letter-spacing: 2px;
 }
 
-.created {
-    text-align: center;
-    font-size: 13px;
-    color: #8A6A4F;
-    margin-bottom: 30px;
+.header-sub {
+    font-size: 18px;
+    color: #E8C9A0;
 }
 
-button {
-    border: 2px solid #D4AF37 !important;
-    background-color: white !important;
-    color: #5A0F2E !important;
-    border-radius: 12px !important;
-    font-weight: 600 !important;
-}
-
-button:hover {
-    background-color: #FFF6D8 !important;
-}
-
-.pdf-card {
-    height: 170px;
-    border-radius: 16px;
-    padding: 18px;
+/* CARDS */
+.card {
     background: white;
     border: 2px solid #D4AF37;
-    color: #5A0F2E;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(212,175,55,0.4);
+}
+
+/* ICON */
+.icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 14px;
+    color: #7A1B3F;
     font-weight: 600;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ================= HEADER =================
-st.markdown(f'<div class="main-title">{APP_NAME}</div>', unsafe_allow_html=True)
-st.markdown('<div class="created">Created by Bilal Shaikh</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="header-box">
+    <div class="header-title">IS_FINE APP</div>
+    <div class="header-sub">Manage your files easily & securely</div>
+</div>
+""", unsafe_allow_html=True)
 
-# ================= HOME =================
-if st.session_state.page == "home":
+# ================= CARDS =================
+col1, col2, col3, col4 = st.columns(4)
 
-    if st.button("📄 Convert Images to PDF", use_container_width=True):
+with col1:
+    if st.button("🖼️ Image to PDF", use_container_width=True):
         st.session_state.page = "convert"
 
-    if st.button("📘 Exam Papers", use_container_width=True):
+with col2:
+    if st.button("📄 Past Exam Papers", use_container_width=True):
         st.session_state.page = "exam"
 
-    if st.button("➕ ADD NEW", use_container_width=True):
-        st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})", unsafe_allow_html=True)
+with col3:
+    if st.button("🔐 Secret Files", use_container_width=True):
+        st.session_state.page = "secret"
 
-# ================= IMAGE TO PDF WITH ROTATION =================
-elif st.session_state.page == "convert":
+with col4:
+    if st.button("➕ Add New", use_container_width=True):
+        st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})")
 
-    st.header("📄 Image to PDF Converter")
+# ================= SECRET PAGE (PLACEHOLDER) =================
+if "page" in st.session_state and st.session_state.page == "secret":
+    st.header("🔐 Secret Files")
+    st.write("This section is private and password protected (can be added).")
 
-    images = st.file_uploader(
-        "Upload images (JPG / PNG)",
-        type=["jpg", "jpeg", "png"],
-        accept_multiple_files=True
-    )
-
-    rotation = st.selectbox(
-        "Rotate pages",
-        options=[0, 90, 180, 270],
-        format_func=lambda x: f"{x}°"
-    )
-
-    if images:
-        pdf = FPDF()
-
-        for img in images:
-            image = Image.open(img).convert("RGB")
-
-            if rotation != 0:
-                image = image.rotate(-rotation, expand=True)
-
-            temp = f"temp_{img.name}"
-            image.save(temp)
-
-            pdf.add_page()
-            pdf.image(temp, x=10, y=10, w=190)
-            os.remove(temp)
-
-        pdf.output("images_to_pdf.pdf")
-
-        with open("images_to_pdf.pdf", "rb") as f:
-            st.download_button(
-                "⬇️ Download PDF",
-                f,
-                file_name="images_to_pdf.pdf",
-                use_container_width=True
-            )
-
-    if st.button("⬅️ Back"):
-        st.session_state.page = "home"
-
-# ================= EXAM PAPERS =================
-elif st.session_state.page == "exam":
-
-    st.header("📘 Exam Papers")
-
-    pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.lower().endswith(".pdf")]
-
-    if not pdfs:
-        st.info("No exam papers available.")
-    else:
-        cols = st.columns(3)
-        for i, pdf in enumerate(pdfs):
-            with cols[i % 3]:
-                st.markdown(
-                    f"""
-                    <div class="pdf-card">
-                        📄<br>{pdf}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-                with open(os.path.join(EXAM_FOLDER, pdf), "rb") as f:
-                    st.download_button(
-                        "⬇️ Download",
-                        f,
-                        pdf,
-                        use_container_width=True
-                    )
-
-    if st.button("⬅️ Back"):
-        st.session_state.page = "home"
+# ================= FOOTER =================
+st.markdown("""
+<div class="footer">
+    Created by Bilal Shaikh
+</div>
+""", unsafe_allow_html=True)
