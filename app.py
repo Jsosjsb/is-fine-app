@@ -1,16 +1,26 @@
 import streamlit as st
+import os
+from PIL import Image
+from fpdf import FPDF
 
 # ================= CONFIG =================
-APP_NAME = "IS_FINE"
+APP_NAME = "IS_FINE APP"
+ADMIN_PASSWORD = "admin123"
+EXAM_FOLDER = "exam_papers"
 WHATSAPP_LINK = "https://wa.me/918999932770"
 
-st.set_page_config(
-    page_title=APP_NAME,
-    page_icon="💎",
-    layout="wide"
-)
+os.makedirs(EXAM_FOLDER, exist_ok=True)
 
-# ================= QATAR STYLE HEADER =================
+# ================= SESSION =================
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+if "admin_logged" not in st.session_state:
+    st.session_state.admin_logged = False
+
+# ================= PAGE CONFIG =================
+st.set_page_config(page_title=APP_NAME, page_icon="💎", layout="wide")
+
+# ================= STYLE =================
 st.markdown("""
 <style>
 body {
@@ -18,53 +28,36 @@ body {
     color: #3A0F1D;
 }
 
-/* HEADER */
-.header-box {
+.header {
     background: linear-gradient(90deg, #5A0F2E, #7A1B3F);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 25px;
+    border-radius: 18px;
     color: white;
-    margin-bottom: 40px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.header-title {
-    font-size: 42px;
-    font-weight: 800;
-    letter-spacing: 2px;
+button {
+    border-radius: 16px !important;
+    border: 2px solid #D4AF37 !important;
+    background: white !important;
+    color: #5A0F2E !important;
+    font-weight: 600 !important;
+    padding: 15px !important;
 }
 
-.header-sub {
-    font-size: 18px;
-    color: #E8C9A0;
-}
-
-/* CARDS */
-.card {
+.pdf-card {
     background: white;
     border: 2px solid #D4AF37;
-    border-radius: 20px;
-    padding: 30px;
+    border-radius: 16px;
+    padding: 15px;
     text-align: center;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    transition: 0.3s ease;
-    cursor: pointer;
+    margin-bottom: 10px;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(212,175,55,0.4);
-}
-
-/* ICON */
-.icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-}
-
-/* FOOTER */
 .footer {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
     font-size: 14px;
     color: #7A1B3F;
     font-weight: 600;
@@ -73,36 +66,140 @@ body {
 """, unsafe_allow_html=True)
 
 # ================= HEADER =================
-st.markdown("""
-<div class="header-box">
-    <div class="header-title">IS_FINE APP</div>
-    <div class="header-sub">Manage your files easily & securely</div>
+st.markdown(f"""
+<div class="header">
+    <h1>{APP_NAME}</h1>
+    <p>Professional File Manager</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ================= CARDS =================
-col1, col2, col3, col4 = st.columns(4)
+# ================= HOME =================
+if st.session_state.page == "home":
 
-with col1:
-    if st.button("🖼️ Image to PDF", use_container_width=True):
-        st.session_state.page = "convert"
+    col1, col2 = st.columns(2)
 
-with col2:
-    if st.button("📄 Past Exam Papers", use_container_width=True):
-        st.session_state.page = "exam"
+    with col1:
+        if st.button("🖼️ Image to PDF", use_container_width=True):
+            st.session_state.page = "convert"
 
-with col3:
-    if st.button("🔐 Secret Files", use_container_width=True):
-        st.session_state.page = "secret"
+        if st.button("📄 Past Exam Papers", use_container_width=True):
+            st.session_state.page = "exam"
 
-with col4:
-    if st.button("➕ Add New", use_container_width=True):
-        st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})")
+    with col2:
+        if st.button("🔐 Admin Panel", use_container_width=True):
+            st.session_state.page = "admin"
 
-# ================= SECRET PAGE (PLACEHOLDER) =================
-if "page" in st.session_state and st.session_state.page == "secret":
-    st.header("🔐 Secret Files")
-    st.write("This section is private and password protected (can be added).")
+        if st.button("➕ ADD NEW", use_container_width=True):
+            st.markdown(f"[Open WhatsApp]({WHATSAPP_LINK})")
+
+# ================= IMAGE TO PDF =================
+elif st.session_state.page == "convert":
+
+    st.header("🖼️ Image to PDF Converter")
+
+    images = st.file_uploader(
+        "Upload images",
+        type=["jpg", "jpeg", "png"],
+        accept_multiple_files=True
+    )
+
+    rotation = st.selectbox("Rotate Pages", [0, 90, 180, 270])
+
+    if images:
+        pdf = FPDF()
+
+        for img in images:
+            image = Image.open(img).convert("RGB")
+
+            if rotation != 0:
+                image = image.rotate(-rotation, expand=True)
+
+            temp_path = f"temp_{img.name}"
+            image.save(temp_path)
+
+            pdf.add_page()
+            pdf.image(temp_path, x=10, y=10, w=190)
+            os.remove(temp_path)
+
+        pdf.output("images_to_pdf.pdf")
+
+        with open("images_to_pdf.pdf", "rb") as f:
+            st.download_button("⬇️ Download PDF", f, "images_to_pdf.pdf", use_container_width=True)
+
+    if st.button("⬅️ Back"):
+        st.session_state.page = "home"
+
+# ================= EXAM PAPERS =================
+elif st.session_state.page == "exam":
+
+    st.header("📄 Past Exam Papers")
+
+    # AUTO DETECT PDFs
+    pdfs = [f for f in os.listdir(EXAM_FOLDER) if f.lower().endswith(".pdf")]
+
+    if not pdfs:
+        st.info("No exam papers available.")
+    else:
+        for pdf in pdfs:
+            st.markdown(f'<div class="pdf-card">{pdf}</div>', unsafe_allow_html=True)
+
+            col1, col2 = st.columns([3, 1])
+
+            with col1:
+                with open(os.path.join(EXAM_FOLDER, pdf), "rb") as f:
+                    st.download_button(
+                        "⬇️ Download",
+                        f,
+                        pdf,
+                        key=f"download_{pdf}",
+                        use_container_width=True
+                    )
+
+            with col2:
+                if st.session_state.admin_logged:
+                    if st.button("🗑 Delete", key=f"delete_{pdf}"):
+                        os.remove(os.path.join(EXAM_FOLDER, pdf))
+                        st.success(f"{pdf} deleted")
+                        st.rerun()
+
+    if st.button("⬅️ Back"):
+        st.session_state.page = "home"
+
+# ================= ADMIN PANEL =================
+elif st.session_state.page == "admin":
+
+    st.header("🔐 Admin Panel")
+
+    if not st.session_state.admin_logged:
+        password = st.text_input("Enter Admin Password", type="password")
+
+        if st.button("Login"):
+            if password == ADMIN_PASSWORD:
+                st.session_state.admin_logged = True
+                st.success("Admin Logged In")
+                st.rerun()
+            else:
+                st.error("Wrong Password")
+
+    else:
+        st.success("Admin Mode Active")
+
+        uploaded_pdf = st.file_uploader("Upload New Exam PDF", type=["pdf"])
+
+        if uploaded_pdf:
+            save_path = os.path.join(EXAM_FOLDER, uploaded_pdf.name)
+            with open(save_path, "wb") as f:
+                f.write(uploaded_pdf.read())
+            st.success("PDF Uploaded Successfully")
+            st.rerun()
+
+        if st.button("Logout"):
+            st.session_state.admin_logged = False
+            st.session_state.page = "home"
+            st.rerun()
+
+        if st.button("⬅️ Back"):
+            st.session_state.page = "home"
 
 # ================= FOOTER =================
 st.markdown("""
