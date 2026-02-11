@@ -2,3 +2,4 @@ streamlit
 Pillow
 fpdf
 PyPDF2
+pandas
