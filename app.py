@@ -82,7 +82,7 @@ if st.session_state.page == "home":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         if st.button("🖼 Image to PDF", use_container_width=True):
@@ -93,10 +93,6 @@ if st.session_state.page == "home":
             st.session_state.page = "exam"
 
     with col3:
-        if st.button("📊 Analytics Dashboard", use_container_width=True):
-            st.session_state.page = "analytics"
-
-    with col4:
         if st.button("📊 Analytics Dashboard", use_container_width=True):
             st.session_state.page = "analytics"
 
@@ -182,6 +178,3 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
-
-
-
