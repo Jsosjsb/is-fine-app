@@ -96,7 +96,7 @@ if st.session_state.page == "home":
         if st.button("📊 Analytics Dashboard", use_container_width=True):
             st.session_state.page = "analytics"
 
-    with col3:
+    with col4:
         if st.button("📊 Analytics Dashboard", use_container_width=True):
             st.session_state.page = "analytics"
 
@@ -182,5 +182,6 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
