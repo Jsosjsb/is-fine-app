@@ -74,7 +74,6 @@ body {
 
 # ================= HOME =================
 if st.session_state.page == "home":
-
     st.markdown(f"""
     <div class="header">
         <h1>{APP_NAME}</h1>
@@ -82,19 +81,20 @@ if st.session_state.page == "home":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4) # Changed to 4 columns
 
     with col1:
         if st.button("🖼 Image to PDF", use_container_width=True):
             st.session_state.page = "convert"
-
     with col2:
         if st.button("📄 Past Exam Papers", use_container_width=True):
             st.session_state.page = "exam"
-
     with col3:
         if st.button("📊 Analytics Dashboard", use_container_width=True):
             st.session_state.page = "analytics"
+    with col4:
+        if st.button("🧠 Test Yourself", use_container_width=True):
+            st.session_state.page = "quiz"
 
 # ================= IMAGE TO PDF =================
 elif st.session_state.page == "convert":
@@ -215,12 +215,66 @@ elif st.session_state.page == "analytics":
     if st.button("⬅ Back to Home"):
         st.session_state.page = "home"
 
+# ================= TEST YOURSELF (QUIZ) =================
+elif st.session_state.page == "quiz":
+    st.markdown('<div class="header"><h1>🧠 Aptitude Challenge</h1></div>', unsafe_allow_html=True)
+    
+    # Define Questions
+    questions = [
+        {
+            "question": "A sum of money at compound interest amounts to thrice itself in 3 years. In how many years will it be 9 times itself?",
+            "options": ["6 years", "9 years", "12 years", "8 years"],
+            "answer": "6 years"
+        },
+        {
+            "question": "Two pipes A and B can fill a tank in 20 and 30 minutes respectively. If both pipes are opened together, the time taken to fill the tank is:",
+            "options": ["50 mins", "12 mins", "25 mins", "15 mins"],
+            "answer": "12 mins"
+        },
+        {
+            "question": "What is the angle between the hands of a clock at 8:30?",
+            "options": ["60°", "75°", "85°", "90°"],
+            "answer": "75°"
+        }
+    ]
+
+    score = 0
+    user_answers = []
+
+    # Display Questions
+    for i, q in enumerate(questions):
+        st.subheader(f"Question {i+1}")
+        choice = st.radio(q["question"], q["options"], key=f"q{i}")
+        user_answers.append(choice)
+
+    if st.button("Submit Score", use_container_width=True):
+        for i, q in enumerate(questions):
+            if user_answers[i] == q["answer"]:
+                score += 1
+        
+        # Display Result in a Luxury Card
+        st.markdown(f"""
+            <div style="background-color: white; padding: 30px; border-radius: 15px; 
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 5px solid #1C6E8C;">
+                <h2 style="color: #1C6E8C;">Final Result</h2>
+                <h1 style="font-size: 60px; margin: 10px 0;">{score} / {len(questions)}</h1>
+                <p style="color: #555;">Great effort! Keep practicing to master your aptitude skills.</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        if score == len(questions):
+            st.balloons()
+
+    if st.button("⬅ Back to Home", type="secondary"):
+        st.session_state.page = "home"
+
 # ================= EMAIL =================
 st.markdown(f"""
 <div class="email">
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
