@@ -31,43 +31,65 @@ header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
 
-# ================= DUBAI STYLE CSS =================
+# ================= LUXURY DUBAI STYLE CSS =================
 st.markdown("""
 <style>
-body {
-    background: #F4F6F9;
-    font-family: 'Segoe UI', sans-serif;
+/* Deep Navy & Gold Theme */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #0A192F 0%, #112240 100%);
 }
 
 .header {
     text-align: center;
-    margin-top: 40px;
-    margin-bottom: 40px;
+    padding: 30px 10px;
 }
 
 .header h1 {
-    font-size: 42px;
-    font-weight: 700;
-    color: #1C6E8C;
+    font-size: 36px;
+    font-weight: 800;
+    color: #CCD6F6; /* Platinum White */
+    letter-spacing: 2px;
+    margin-bottom: 0px;
 }
 
 .header p {
-    font-size: 16px;
-    color: #555;
-    margin-top: 8px;
+    font-size: 14px;
+    color: #64FFDA; /* Teal/Gold accent */
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
-.card-container {
-    max-width: 900px;
-    margin: auto;
+/* Luxury Card Styling for Buttons */
+div.stButton > button {
+    background: rgba(255, 255, 255, 0.05);
+    color: #64FFDA;
+    border: 1px solid #64FFDA;
+    padding: 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    font-weight: 600;
+    height: 100px;
+}
+
+div.stButton > button:hover {
+    background: #64FFDA;
+    color: #0A192F;
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.4);
+    transform: translateY(-5px);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+    .header h1 { font-size: 28px; }
+    div.stButton > button { height: 80px; font-size: 16px; }
 }
 
 .email {
     text-align: center;
-    margin-top: 60px;
-    font-size: 15px;
-    color: #1C6E8C;
-    font-weight: 500;
+    padding: 20px;
+    color: #8892B0;
+    font-size: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -274,6 +296,7 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
