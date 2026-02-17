@@ -2,381 +2,183 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite B.Com Prep | Premium Learning</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite MCQ Bank | B.Com Prep</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #d4af37;
-            --gold-light: #f1d592;
             --bg-dark: #0a0a12;
-            --glass: rgba(255, 255, 255, 0.03);
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background: radial-gradient(circle at top right, #1a1a2e, #0a0a12);
+            background: #0a0a12;
             color: #e0e0e0;
             font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
             line-height: 1.6;
+            padding: 15px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .header { text-align: center; padding: 20px 0; }
+        h1 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; letter-spacing: 2px; }
 
-        .fade-in { animation: fadeIn 0.5s forwards; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-        header { text-align: center; padding-bottom: 60px; }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            margin-bottom: 0.5rem;
-        }
-
-        .tagline {
-            font-size: 1rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #888;
-        }
-
-        .lux-btn {
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 16px 40px;
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition);
-            margin: 10px;
-        }
-
-        .lux-btn:hover {
-            background: var(--gold);
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px rgba(212,175,55,0.3);
-        }
-
-        .subject-grid {
+        /* Stable Grid for Mobile */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: 1fr; /* Single column for better focus on mobile */
+            gap: 15px;
             margin-top: 20px;
         }
 
         .subject-card {
             background: var(--glass);
-            border: 1px solid rgba(212,175,55,0.2);
-            padding: 40px;
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-            cursor: pointer;
+            border: 1px solid rgba(212,175,55,0.3);
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
+            transition: 0.2s;
         }
 
-        .subject-card:hover {
-            border-color: var(--gold);
-            background: rgba(212,175,55,0.1);
-            transform: translateY(-5px);
-        }
+        .subject-card:active { transform: scale(0.98); background: rgba(212,175,55,0.1); }
+        .subject-card h3 { color: var(--gold); font-size: 1.1rem; margin-bottom: 5px; }
 
-        .subject-card h3 { 
-            font-family: 'Playfair Display', serif; 
-            color: var(--gold-light);
-            margin-bottom: 10px;
-        }
-
+        /* Quiz Styles */
         .question-card {
             background: var(--glass);
-            padding: 30px;
-            margin-bottom: 25px;
-            border-left: 3px solid var(--gold);
-            animation: fadeIn 0.4s ease-out;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--gold);
         }
 
-        .options label {
+        .option-label {
             display: block;
-            padding: 15px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 8px 0;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: 0.3s;
+            font-size: 0.9rem;
         }
 
-        .options label:hover { background: rgba(255,255,255,0.05); }
-
-        .back-btn {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            color: var(--gold);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            z-index: 1000;
-            cursor: pointer;
-            text-decoration: underline;
+        .btn {
+            background: var(--gold);
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            text-transform: uppercase;
         }
 
-        .hidden { display: none !important; }
-
-        .result-box {
-            text-align: center;
-            border: 1px solid var(--gold);
-            padding: 60px;
-        }
-
-        .score-big {
-            font-size: 5rem;
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-        }
+        .hidden { display: none; }
+        .back-link { color: var(--gold); text-decoration: none; font-size: 0.8rem; margin-bottom: 20px; display: inline-block; }
     </style>
 </head>
 <body>
 
-<div class="back-btn hidden" onclick="goHome()">BACK TO HOME</div>
-
-<div id="home" class="container fade-in">
-    <header>
-        <h1>Elite Prep</h1>
-        <p class="tagline">T.Y.B.Com Excellence Portfolio</p>
-        <div style="margin-top:60px;">
-            <button class="lux-btn" onclick="showSection('mcq-section')">MCQ Questions</button>
-            <button class="lux-btn" onclick="showSection('match-section')">Match the Pair</button>
-            <button class="lux-btn" onclick="showDashboard()">Dashboard</button>
-        </div>
-    </header>
+<div id="home-view">
+    <div class="header">
+        <h1>EXAM PREP</h1>
+        <p style="font-size:0.7rem; opacity:0.6; letter-spacing:2px;">SELECT A SUBJECT</p>
+    </div>
+    <div class="grid" id="subject-list"></div>
 </div>
 
-<div id="mcq-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:2rem;">Select Subject</h2>
-    <div class="subject-grid" id="mcq-grid"></div>
-</div>
-
-<div id="match-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:2rem;">Match the Pair</h2>
-    <div class="subject-grid" id="match-grid"></div>
-</div>
-
-<div id="practice-area" class="container hidden">
-    <h2 id="practice-title" style="text-align:center; color:var(--gold); font-family:'Playfair Display'; margin-bottom:2rem;"></h2>
+<div id="quiz-view" class="hidden">
+    <a href="#" class="back-link" onclick="showHome()">← BACK TO SUBJECTS</a>
+    <h2 id="quiz-title" style="color:var(--gold); margin-bottom:20px; font-size:1.3rem;"></h2>
     <form id="quiz-form"></form>
-    <div style="text-align:center; margin-top:40px;">
-        <button class="lux-btn" onclick="submitQuiz()">Submit Answers</button>
-    </div>
+    <button class="btn" onclick="submitQuiz()">Check Results</button>
 </div>
 
-<div id="result" class="container hidden">
-    <div class="result-box">
-        <h2 style="letter-spacing:5px; color:#888;">YOUR PERFORMANCE</h2>
-        <div class="score-big" id="score-display">0/0</div>
-        <p id="percentage" style="font-size:1.2rem; margin-bottom:2rem;"></p>
-        <button class="lux-btn" onclick="goHome()">Back to Home</button>
-    </div>
-</div>
-
-<div id="dashboard" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:2rem;">Your Progress</h2>
-    <div id="scores-list"></div>
+<div id="result-view" class="hidden" style="text-align:center; padding-top:50px;">
+    <h2 style="color:var(--gold); font-size:2rem;">Your Score</h2>
+    <div id="score-display" style="font-size:4rem; font-weight:bold; margin:20px 0;"></div>
+    <button class="btn" onclick="showHome()">Try Another Subject</button>
 </div>
 
 <script>
+// Data derived from provided B.Com source
 const mcqData = {
-    "Marketing Management III": [
-        {q:"Under ______ element agreements of buy and sales economical and business are done.",o:["E-mail","E-filing","E-Governance","E-Commerce"],a:"E-Commerce"},
-        {q:"______ exchange is an important measure of given and take through social media.",o:["Printing","Design","Message","Medium"],a:"Message"},
-        {q:"Marketing ______ is systematic planning and policy.",o:["Environment","Control","Audit","News"],a:"Control"},
-        {q:"Customer is a king of market and he will satisfy if he get ______.",o:["Customer satisfaction","Customer Loyalty","Customer Relation","Customer Growth"],a:"Customer satisfaction"},
-        {q:"Due to ______ there is a flexibility in daily routine work of a company.",o:["Marketing Environment","Marketing control","Marketing planning","Marketing organisation"],a:"Marketing organisation"},
-        {q:"If an advertisement there is an element ______ it will be complete.",o:["Design","Advertising media","Printing","Trademark"],a:"Design"},
-        {q:"Analytical study of marketing strategy is done in ______",o:["Marketing Audit","Marketing planning","Marketing control","Marketing organisation"],a:"Marketing Audit"},
-        {q:"In service marketing after sales service... are part of ______",o:["Person oriented components","Product oriented components","Quality oriented components","Industry Group components"],a:"Quality oriented components"},
-        {q:"Marketing Audit is done by ______ Auditor.",o:["Business Auditor","Marketing Auditor","Financial Auditor","Cost Auditor"],a:"Marketing Auditor"},
-        {q:"______ are depend on use of Internet and modern technology",o:["Press Media","Audio-video Media","Social Media","Earned Media"],a:"Social Media"},
-        {q:"______ is an effective technique of control of market...",o:["Market cost analysis","Ratio Analysis","Variance Analysis","SWOC Analysis"],a:"SWOC Analysis"},
-        {q:"______ exchange is an important measure of give & take through social media.",o:["Printing","Design","Message","Media"],a:"Media"},
-        {q:"In ______ includes online buying & selling as well as financial business deals.",o:["E-mail","Website","E-Business","E-Commerce"],a:"E-Commerce"},
-        {q:"If is important that the ______ component be attractive for advertising...",o:["Design","Advertising media","Printing","Trade mark"],a:"Design"},
-        {q:"Customer is a king of market and he will satisfy if he get.",o:["Satisfaction","Loyalty","Relation","Customer Growth"],a:"Satisfaction"}
+    "Marketing Management": [
+        {q:"E-Commerce involves buying and selling through ______.", o:["Email","Manual","Electronic Media","Printing"], a:"Electronic Media"},
+        {q:"The 'King' of the market is the ______.", o:["Seller","Producer","Customer","Government"], a:"Customer"}
     ],
     "Business Economics": [
-        {q:"The Human development index released from ______",o:["1947","1950","1990","2014"],a:"1990"},
-        {q:"F.D.I. stands for ______",o:["Foreign direct investment","Foreign direct inter-vention","Foreign domestic investment","Fast direct investment"],a:"Foreign direct investment"},
-        {q:"India is the founder member of ______",o:["ASIAN","SAARC","USA","UAE"],a:"SAARC"},
-        {q:"International trade means ______",o:["Trade between countries","Trade between regions","Trade between provinces","Trade between two states"],a:"Trade between countries"},
-        {q:"The Multidimensional Poverty Index (M.P.I) is released by ______. ",o:["World Bank","World Economic Forum","U.N.D.P.","Asian development bank"],a:"U.N.D.P."},
-        {q:"______ means a systematic record of all economic transactions...",o:["Balance of Trade","Balance of Transactions","Budget","Balance of payments"],a:"Balance of payments"},
-        {q:"______ organisation publishes the human development index report.",o:["World Bank","World Economic Forum","IMF","UNDP"],a:"UNDP"},
-        {q:"F.D.I stands for ______",o:["Foreign development index","Foreign direct index","Foreign direct investment","Future domestic investment"],a:"Foreign direct investment"},
-        {q:"IMF was established in ______",o:["1944","1945","1996","1995"],a:"1945"},
-        {q:"Currently ______ countries are members of SAARC organisation",o:["11","9","8","10"],a:"8"},
-        {q:"Special Drawing Rights (SDR) is related to ______",o:["World Bank","International Monetary fund","Reserve Bank of India","United Nations organisation"],a:"International Monetary fund"},
-        {q:"SAARC headquarters is located as ______",o:["Kathmandu","Manila","New Delhi","Mumbai"],a:"Kathmandu"},
-        {q:"The government's policy of import-export is known as ______",o:["Financial policy","Monetary policy","Foreign trade policy","Fiscal policy"],a:"Foreign trade policy"},
-        {q:"India is the founder member of ______",o:["E.U.","U.S.A.","OPEC","BRICS"],a:"BRICS"},
-        {q:"______ is called the engine of economic development.",o:["Domestic trade","National Income","National trade","International trade"],a:"International trade"}
+        {q:"F.D.I. stands for ______.", o:["Foreign Direct Investment","Fast Direct Index","Future Domestic Investment"], a:"Foreign Direct Investment"},
+        {q:"The Human Development Index was released in ______.", o:["1947","1990","2014"], a:"1990"}
     ],
-    "Advanced Accounting II": [
-        {q:"Stock Turnover Ratio is a ______",o:["Liquidity Ratio","Turnover Ratio","Short Term Solvency Ratio","Profitability Ratio"],a:"Turnover Ratio"},
-        {q:"When a branch is located in a foreign country, it is called ______",o:["Domestic Branch","Foreign Branch","Home Branch","Inland Branch"],a:"Foreign Branch"},
-        {q:"Cooperative Societies in Maharashtra are required to transfer ______ of the profit to Reserve fund.",o:["20%","25%","30%","35%"],a:"25%"},
-        {q:"Current Assets + Current Liabilities = ______",o:["Current Ratio","Liquid Ratio","Current Ratio","Quick Ratio"],a:"Current Ratio"},
-        {q:"The members of cooperative society have ______",o:["Unlimited Liability","Joint Liability","Limited Liability","Joint and Several Liabilities"],a:"Limited Liability"},
-        {q:"Full form of AI is ______",o:["Artificially Intelligent","Artificial Intelligence","Artificially Intelligence","Advance Intelligence"],a:"Artificial Intelligence"},
-        {q:"______ are not formed for earning profit.",o:["Co-operative Society","Public Company","HUF","Private Company"],a:"Co-operative Society"},
-        {q:"Dividend received on shares is comes to the ______ side of profit and loss account.",o:["Income","Expenditure","Interest","Loss"],a:"Income"},
-        {q:"Branch not keeping the full system of accounting is also known as ______",o:["Foreign Branch","Dependent Branch","Independent Branch","None of the above"],a:"Dependent Branch"},
-        {q:"Branch account is prepared to ascertain ______",o:["Profit and Loss of the Branch","Financial Statement of the Business","Assets and Liability of the Head Office","None of the above"],a:"Profit and Loss of the Branch"},
-        {q:"______ is prepared to maintaining the small expenses like carriage postage...",o:["Management Books","Petty Cash Book","Accounting Books","None of the above"],a:"Petty Cash Book"},
-        {q:"Debt to equity ratio establishes the relationship between ______",o:["Long-term debt... and current assets","Current Assets and Current Liabilities","Long-term debt and owner's equity","None of the above"],a:"Long-term debt and owner's equity"},
-        {q:"Under Stock and Debtors System, general income is credited to ______",o:["Branch Profit and Loss Account","Branch Stock Account","Branch Petty Cash","Branch Expenses"],a:"Branch Profit and Loss Account"}
-    ],
-    "Business Regulatory Framework II": [
-        {q:"______ is the Person who makes the Bill of Exchange.",o:["Payee","Drawee","Drawer"],a:"Drawer"},
-        {q:"Suspension of Digital signature certificate under section ______",o:["Section - 35","Section - 36","Section - 37"],a:"Section - 37"},
-        {q:"Consumer protection Act,2019 came into force on ______",o:["20 July 2020","1 April 2020","31 December 2020"],a:"20 July 2020"},
-        {q:"Copyright for photography is ______ years.",o:["40","50","60"],a:"60"},
-        {q:"Procedure of District consumer Forum... is carried as per section ______",o:["35","37","38"],a:"38"},
-        {q:"A ______ is a bill of exchange drawn on a specified banker payable on demand.",o:["Promissory Note","Cheque","Bills of Exchange"],a:"Cheque"},
-        {q:"The Negotiable Instruments Act was passed in ______",o:["1881","1872","1930"],a:"1881"},
-        {q:"The transaction of buying and selling with the help of electronic media are called ______",o:["E-Commerce","E-Communication","E-Management"],a:"E-Commerce"},
-        {q:"Every year since 1986 ______ has been celebrated as consumer day.",o:["15 March","16 March","18 March"],a:"15 March"},
-        {q:"______ is the right granted to the creator of a work of literature...",o:["Trademark","Patent","Copyright"],a:"Copyright"},
-        {q:"The Act of ______ was enacted to protect India geographical producers...",o:["2000","1999","1998"],a:"1999"},
-        {q:"______ is the theft of personal or confidential information...",o:["Cybercrime","Virus","E-mail Spoofing"],a:"Cybercrime"},
-        {q:"A valid document must always be in ______",o:["Oral","Promise","Writing"],a:"Writing"},
-        {q:"______ is an enforceable and legally binding contract made through software.",o:["Proposal","Acceptance","E-Contract"],a:"E-Contract"},
-        {q:"A person who buys a goods or services by paying is called a ______",o:["Customer","Salesman","Producer"],a:"Customer"}
+    "Advanced Accounting": [
+        {q:"Stock Turnover Ratio is a ______ Ratio.", o:["Liquidity","Turnover","Solvency"], a:"Turnover"},
+        {q:"Full form of AI is ______.", o:["Artificially Intelligent","Artificial Intelligence","Advanced Info"], a:"Artificial Intelligence"}
     ]
 };
 
-const matchData = {
-    "Business Economics": [
-        ["I.M.F.", "G.D.P.", "World Bank", "EXIM policy", "Current Account"],
-        ["International Monetary Fund", "Gross Domestic Product", "International Bank for Reconstruction and Development", "Foreign Trade Policy", "Balance of Trade"]
-    ]
-};
-
-let currentSubject = "";
-let currentType = "";
-
-// Initialize subject cards on page load
-window.onload = function() {
-    const subjects = Object.keys(mcqData);
-    const mcqGrid = document.getElementById('mcq-grid');
-    const matchGrid = document.getElementById('match-grid');
-
-    subjects.forEach(sub => {
-        mcqGrid.innerHTML += `
-            <div class="subject-card fade-in" onclick="startPractice('${sub}', 'mcq')">
+function init() {
+    const list = document.getElementById('subject-list');
+    Object.keys(mcqData).forEach(sub => {
+        list.innerHTML += `
+            <div class="subject-card" onclick="startQuiz('${sub}')">
                 <h3>${sub}</h3>
-                <p style="color:#888; letter-spacing:1px; font-size:0.75rem;">VIEW QUESTIONS</p>
-            </div>`;
-        
-        const isAvail = matchData[sub] ? "AVAILABLE" : "COMING SOON";
-        matchGrid.innerHTML += `
-            <div class="subject-card fade-in" onclick="startPractice('${sub}', 'match')">
-                <h3>${sub}</h3>
-                <p style="color:#888; letter-spacing:1px; font-size:0.75rem;">${isAvail}</p>
-            </div>`;
+                <p style="font-size:0.7rem; opacity:0.5;">START PRACTICE</p>
+            </div>
+        `;
     });
-};
+}
 
-function showSection(id) {
-    document.querySelectorAll('.container').forEach(d => d.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    document.querySelector('.back-btn').classList.remove('hidden');
+function startQuiz(sub) {
+    document.getElementById('home-view').classList.add('hidden');
+    document.getElementById('quiz-view').classList.remove('hidden');
+    document.getElementById('quiz-title').innerText = sub;
+    
+    const form = document.getElementById('quiz-form');
+    form.innerHTML = "";
+    
+    mcqData[sub].forEach((item, i) => {
+        let optionsHtml = item.o.map(opt => `
+            <label class="option-label">
+                <input type="radio" name="q${i}" value="${opt}"> ${opt}
+            </label>
+        `).join('');
+        
+        form.innerHTML += `
+            <div class="question-card">
+                <p style="margin-bottom:10px;">${i+1}. ${item.q}</p>
+                ${optionsHtml}
+            </div>
+        `;
+    });
     window.scrollTo(0,0);
 }
 
-function goHome() {
-    document.querySelectorAll('.container').forEach(d => d.classList.add('hidden'));
-    document.getElementById('home').classList.remove('hidden');
-    document.querySelector('.back-btn').classList.add('hidden');
-}
-
-function startPractice(subject, type) {
-    currentSubject = subject;
-    currentType = type;
-    document.getElementById('practice-title').innerText = subject;
-    const form = document.getElementById('quiz-form');
-    form.innerHTML = "";
-
-    if (type === 'mcq') {
-        const qs = mcqData[subject] || [];
-        qs.forEach((item, i) => {
-            const div = document.createElement('div');
-            div.className = 'question-card';
-            div.innerHTML = `<p style="font-size:1.1rem; margin-bottom:15px; color:var(--gold-light)">Q${i+1}. ${item.q}</p><div class="options">`;
-            item.o.forEach(opt => {
-                div.innerHTML += `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`;
-            });
-            div.innerHTML += `</div>`;
-            form.appendChild(div);
-        });
-    } else {
-        if (!matchData[subject]) {
-            form.innerHTML = "<p style='text-align:center; padding:50px; color:#888;'>Module coming soon.</p>";
-        } else {
-            const left = matchData[subject][0];
-            const right = [...matchData[subject][1]].sort(() => Math.random() - 0.5);
-            let html = "<div class='question-card'><table>";
-            left.forEach((l, i) => {
-                html += `<tr>
-                    <td style="padding:15px; color:var(--gold); border-bottom:1px solid rgba(255,255,255,0.05);">${l}</td>
-                    <td style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.05);">
-                        <select style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--gold);">
-                            <option value="">Select...</option>
-                            ${right.map(r => `<option value="${r}">${r}</option>`).join('')}
-                        </select>
-                    </td>
-                </tr>`;
-            });
-            html += "</table></div>";
-            form.innerHTML = html;
-        }
-    }
-    showSection('practice-area');
-}
-
 function submitQuiz() {
+    const sub = document.getElementById('quiz-title').innerText;
+    const questions = mcqData[sub];
     let score = 0;
-    let total = 0;
-    if (currentType === 'mcq') {
-        const qs = mcqData[currentSubject];
-        total = qs.length;
-        qs.forEach((item, i) => {
-            const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            if (selected && selected.value === item.a) score++;
-        });
-    } else if (matchData[currentSubject]) {
-        const selects = document.querySelectorAll('select');
-        total = selects.length;
-        selects.forEach((sel, i) => {
-            if (sel.value === matchData[currentSubject][1][i]) score++;
-        });
-    }
-    document.getElementById('score-display').innerText = `${score}/${total}`;
-    document.getElementById('percentage').innerText = `${((score/total)*100).toFixed(0)}% SUCCESS RATE`;
-    showSection('result');
+    
+    questions.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if(selected && selected.value === item.a) score++;
+    });
+    
+    document.getElementById('quiz-view').classList.add('hidden');
+    document.getElementById('result-view').classList.remove('hidden');
+    document.getElementById('score-display').innerText = `${score} / ${questions.length}`;
 }
 
-function showDashboard() {
-    const list = document.getElementById('scores-list');
-    list.innerHTML = "<p style='text-align:center; color:#888;'>Dashboard active for session attempts.</p>";
-    showSection('dashboard');
+function showHome() {
+    document.getElementById('quiz-view').classList.add('hidden');
+    document.getElementById('result-view').classList.add('hidden');
+    document.getElementById('home-view').classList.remove('hidden');
 }
+
+init();
 </script>
 </body>
 </html>
