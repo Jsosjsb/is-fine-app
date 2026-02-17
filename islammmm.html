@@ -1,198 +1,216 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>السكينة الإسلامية - بوابة الرفعة الإسلامية الفاخرة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Reem+Kufi:wght@400;600&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Al-Sakina | Islamic Tranquility</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Luxury Islamic Gold Palette [web:23][web:27] */
             --navy-deep: #0a0e3a;
-            --indigo-mid: #1a1f5a;
-            --purple-gold: #3a0f5f;
             --gold-primary: #e6c547;
             --gold-metallic: #FFD700;
             --cream-light: #f8f1d9;
-            --cream-soft: #e6d9b3;
+            --glass: rgba(255, 255, 255, 0.07);
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            font-family: 'Noto Naskh Arabic', 'Amiri', serif;
-            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--indigo-mid) 35%, var(--purple-gold) 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at top, #1a1f5a, var(--navy-deep));
             color: var(--cream-light);
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-            direction: rtl;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        header { text-align: center; padding: 30px 0; width: 100%; }
         
-        /* Rotating Islamic Geometric Pattern */
-        body::before {
-            content: '';
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                conic-gradient(from 0deg at 25% 75%, var(--gold-metallic)10 0deg, transparent 90deg),
-                conic-gradient(from 90deg at 75% 25%, var(--gold-primary)10 0deg, transparent 90deg),
-                repeating-conic-gradient(from 0deg, transparent 0 30deg, rgba(255,255,255,0.03) 30deg 60deg);
-            animation: geoRotate 80s linear infinite;
-            z-index: 1; pointer-events: none;
-        }
-        @keyframes geoRotate { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(180deg); } }
-        
-        header { text-align: center; padding: 80px 20px; z-index: 2; position: relative; }
         h1 {
-            font-family: 'Aref Ruqaa', serif; font-size: clamp(2.5rem, 8vw, 5rem);
-            background: linear-gradient(45deg, var(--cream-light), var(--gold-metallic), var(--gold-primary));
-            background-size: 400% 400%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-            animation: goldShimmer 4s ease infinite; filter: drop-shadow(0 0 30px var(--gold-primary)50);
+            font-family: 'Amiri', serif;
+            font-size: 2.2rem;
+            background: linear-gradient(to bottom, var(--gold-metallic), var(--gold-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
         }
-        @keyframes goldShimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; z-index: 2; position: relative; }
+
+        .subtitle { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Stable Grid for Mobile */
         .emotions-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; margin-top: 100px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Forces 2 columns on mobile */
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
         }
-        
-        /* Glowing Hover CSS for Islamic Cards [web:25][web:29] */
+
         .emotion-box {
-            background: rgba(255,255,255,0.15); backdrop-filter: blur(30px);
-            border: 2px solid rgba(var(--gold-primary), 0.5); border-radius: 32px;
-            padding: 50px 30px; text-align: center; cursor: pointer; position: relative; overflow: hidden;
-            transition: all 0.7s cubic-bezier(0.23,1,0.32,1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: var(--glass);
+            border: 1px solid rgba(230,197,71,0.2);
+            border-radius: 18px;
+            padding: 20px 10px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .emotion-box::before {
-            content: ''; position: absolute; inset: 0; background: conic-gradient(var(--gold-metallic)10, transparent 270deg);
-            opacity: 0; transition: opacity 0.6s; padding: 2px; border-radius: 30px; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite: exclude;
+
+        .emotion-box:active {
+            transform: scale(0.96);
+            background: rgba(230,197,71,0.15);
+            border-color: var(--gold-primary);
         }
-        .emotion-box:hover {
-            transform: translateY(-25px) scale(1.1); border-color: var(--gold-metallic);
-            box-shadow: 
-                0 40px 80px rgba(0,0,0,0.6),
-                0 0 60px var(--gold-primary)60,
-                inset 0 0 40px rgba(255,255,255,0.2);
+
+        .icon { font-size: 2.2rem; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
+        .title { font-weight: 600; font-size: 0.9rem; color: var(--gold-primary); letter-spacing: 1px; }
+
+        /* Modal / Popup */
+        .modal { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 1000; padding: 20px;
+            align-items: center; justify-content: center;
         }
-        .emotion-box:hover::before { opacity: 1; animation: spinGlow 1.5s linear infinite; }
-        @keyframes spinGlow { to { transform: rotate(360deg); } }
-        
-        .emotion-icon { font-size: clamp(4rem, 12vw, 6rem); margin-bottom: 25px; transition: all 0.5s; }
-        .emotion-box:hover .emotion-icon { transform: scale(1.3) rotate(360deg); filter: drop-shadow(0 0 20px var(--gold-primary)); }
-        .emotion-title { font-family: 'Reem Kufi', sans-serif; font-size: 2.2rem; color: var(--cream-light); }
-        
-        /* Modal & Verse Popups */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 1000; animation: fadeScale 0.5s; }
-        @keyframes fadeScale { from { opacity: 0; transform: scale(0.95); } }
         .modal-content {
-            background: linear-gradient(145deg, rgba(10,14,58,0.98), rgba(58,15,95,0.98)); margin: 5vh auto; padding: 60px; width: 90%; max-width: 950px;
-            border-radius: 40px; border: 3px solid rgba(var(--gold-primary), 0.7); max-height: 85vh; overflow-y: auto; backdrop-filter: blur(40px);
+            background: linear-gradient(145deg, #0f1442, #070a2b);
+            border: 1px solid var(--gold-primary);
+            border-radius: 25px;
+            padding: 25px;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease-out;
         }
-        .close { position: absolute; top: 25px; left: 25px; font-size: 3.5rem; color: var(--cream-light); cursor: pointer; transition: all 0.4s; }
-        .close:hover { color: var(--gold-primary); transform: rotate(-90deg) scale(1.3); }
-        
-        /* Interactive Verse Popups */
-        .verse, .dua, .hadith {
-            background: rgba(255,255,255,0.1); padding: 30px; margin: 25px 0; border-radius: 25px; cursor: pointer; position: relative;
-            border-left: 6px solid var(--gold-primary); transition: all 0.4s; font-family: 'Noto Naskh Arabic', serif;
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .close { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: var(--gold-primary); cursor: pointer; }
+
+        .verse-box {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 15px;
+            border-right: 3px solid var(--gold-primary);
+            text-align: right;
         }
-        .verse:hover, .dua:hover, .hadith:hover { transform: translateX(-15px); box-shadow: 0 0 30px var(--gold-primary)40; }
-        .arabic { font-size: 1.9rem; color: var(--cream-light); margin-bottom: 12px; line-height: 1.7; }
-        .english, .translit { font-size: 1.2rem; color: var(--cream-soft); text-align: left; direction: ltr; }
-        .reference { color: var(--gold-primary); font-weight: 700; margin-top: 12px; font-size: 1.1rem; }
+        .arabic-text { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--gold-metallic); margin-bottom: 12px; line-height: 1.6; }
+        .english-text { font-size: 0.9rem; line-height: 1.5; color: #fff; text-align: left; direction: ltr; font-weight: 300; }
+        .ref { font-size: 0.75rem; color: var(--gold-primary); margin-top: 12px; font-weight: 600; text-align: left; text-transform: uppercase; }
         
-        /* Verse Popup Tooltip */
-        .verse-popup {
-            position: absolute; background: var(--navy-deep); padding: 20px; border-radius: 15px; z-index: 10; white-space: nowrap;
-            box-shadow: 0 10px 30px rgba(230,197,71,0.5); display: none; font-size: 1rem; max-width: 300px;
-            border: 2px solid var(--gold-primary); right: 110%; top: 50%; transform: translateY(-50%);
-        }
-        .verse-popup::after { content: ''; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); border: 8px solid transparent; border-right-color: var(--gold-primary); }
-        .verse-popup audio { width: 100%; margin-top: 10px; }
-        
-        /* Responsive Luxury Mobile [web:24][web:28] */
-        @media (max-width: 768px) {
-            .emotions-grid { grid-template-columns: 1fr; gap: 30px; } /* Fluid single column */
-            .modal-content { margin: 10vh auto; width: 95%; padding: 40px; } /* Thumb-friendly padding */
-            button, .close { min-height: 48px; min-width: 48px; } /* Touch targets */
-            .container { padding: 10px; } /* Reduced side padding */
-            h1 { font-size: 3rem; } /* Clamp scales naturally */
-        }
-        @media (max-width: 480px) { .arabic { font-size: 1.6rem; } } /* Mobile text sizing */
-        
-        footer { text-align: center; padding: 50px 20px; margin-top: 120px; opacity: 0.85; z-index: 2; }
+        footer { margin-top: auto; padding: 20px; font-size: 0.7rem; opacity: 0.5; letter-spacing: 1px; }
     </style>
 </head>
 <body>
+
     <header>
-        <h1>السَّكِينَةُ الْإِسْلَامِيَّةُ</h1>
-        <p style="font-size: 1.4rem; opacity: 0.9;">الْقُرْآنُ وَالْحَدِيثُ لِلْعِلَاجِ وَالرَّاحَةِ</p>
+        <h1>AL-SAKINA</h1>
+        <p class="subtitle">Spiritual Healing & Peace</p>
     </header>
     
-    <div class="container">
-        <div class="emotions-grid" id="emotionsGrid"></div>
+    <div class="emotions-grid">
+        <div class="emotion-box" onclick="showHealing('Sadness')">
+            <span class="icon">😢</span>
+            <span class="title">SADNESS</span>
+        </div>
+        <div class="emotion-box" onclick="showHealing('Anger')">
+            <span class="icon">😡</span>
+            <span class="title">ANGER</span>
+        </div>
+        <div class="emotion-box" onclick="showHealing('Anxiety')">
+            <span class="icon">😰</span>
+            <span class="title">ANXIETY</span>
+        </div>
+        <div class="emotion-box" onclick="showHealing('Loneliness')">
+            <span class="icon">😔</span>
+            <span class="title">LONELY</span>
+        </div>
+        <div class="emotion-box" onclick="showHealing('Stress')">
+            <span class="icon">😫</span>
+            <span class="title">STRESS</span>
+        </div>
+        <div class="emotion-box" onclick="showHealing('Patience')">
+            <span class="icon">⏳</span>
+            <span class="title">PATIENCE</span>
+        </div>
     </div>
-    
-    <footer>© 2026 | أَلاَ بِذِكْرِ اللّهِ تَطْمَئِنُّ الْقُلُوبُ [الرعد:28]</footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title" style="color:var(--gold-primary); text-align:center; font-size:1.2rem; letter-spacing:2px;"></h2>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>© 2026 UNI-FIREEE SPIRITUAL</footer>
 
     <script>
-        // Authentic Content Only - Sahih Bukhari/Muslim/Quran [web:8][web:26][web:1]
-        const emotions = [
-            {name: 'الحزن 😢', title: 'الحُزْنُ', content: [
-                {type:'quran', arabic:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا', english:'Do not weaken or grieve (3:139)', ref:'آل عمران 3:139 [Sahih Quran]'},
-                {type:'dua', arabic:'اللَّهُمَّ إِنِّي عَبْدُكَ...', english:'O Allah I am Your servant (Musnad Ahmad)', ref:'صحيح [web:8]'}
-            ]},
-            {name: 'الْغَضَبُ 😡', title: 'الْغَضَبُ', content: [
-                {type:'hadith', text:'الْقَوِيُّ لَيْسَ الْمُصَارِعُ... (Bukhari 6114)', ref:'صحيح البخاري [web:4]'},
-                {type:'quran', arabic:'الْكَاظِمِينَ الْغَيْظَ', english:'Restrain anger (3:134)', ref:'آل عمران 3:134'}
-            ]},
-            {name: 'الْوَحْدَةُ 😔', title: 'الْوَحْدَةُ', content: [
-                {type:'quran', arabic:'وَنَحْنُ أَقْرَبُ إِلَيْهِ', english:'Closer than jugular vein (50:16)', ref:'ق 50:16'},
-                {type:'dua', arabic:'يَا حَيُّ يَا قَيُّومُ', english:'O Living Sustainer [web:18]', ref:'صحيح'}
-            ]},
-            {name: 'الِاكْتِئَابُ 😞', title: 'الِاكْتِئَابُ', content: [  // Depression Duas Integrated
-                {type:'quran', arabic:'لَا يُكَلِّفُ اللَّهُ نَفْسًا', english:'No burden beyond capacity (2:286)', ref:'البقرة 2:286'},
-                {type:'dua', arabic:'اللَّهُمَّ اجْعَلِ الْقُرْآنَ رَبِيعَ قَلْبِي...', english:'Make Quran spring of my heart, banisher of depression (Ibn Hibban)', ref:'صحيح [web:8][web:26]'},
-                {type:'dua', arabic:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ', english:'Protect from worry & grief (Bukhari)', ref:'صحيح البخاري [web:8]'}
-            ]},
-            {name: 'السَّعَادَةُ 🙂', title: 'السَّعَادَةُ', content: [
-                {type:'quran', arabic:'لَنُحْيِيَنَّهُ حَيَاةً طَيِّبَةً', english:'Good life for righteous (16:97)', ref:'النحل 16:97'}
-            ]},
-            {name: 'الْتَّوَتُّرُ 😰', title: 'الْتَّوَتُّرُ', content: [
-                {type:'quran', arabic:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ', english:'Hearts find rest in Zikr (13:28)', ref:'الرعد 13:28'},
-                {type:'dua', arabic:'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ', english:'By Your mercy I seek help [web:14]', ref:'سنة'}
-            ]}
-        ];
-        
-        const grid = document.getElementById('emotionsGrid');
-        emotions.forEach((emo, i) => {
-            const box = document.createElement('div'); box.className = 'emotion-box';
-            box.innerHTML = `<div class="emotion-icon">${emo.name.split(' ')[0] === 'الْ' ? emo.name.slice(0,2) + '😢' : emo.name.split(' ')[1]}</div><h2 class="emotion-title">${emo.title}</h2>`;
-            box.onclick = () => openModal(i); grid.appendChild(box);
-        });
-        
-        function openModal(i) {
-            const modal = document.createElement('div'); modal.className = 'modal';
-            let html = `<span class="close">×</span><h2 style="font-family:'Aref Ruqaa'; font-size:2.5rem; text-align:center; color:var(--gold-metallic); margin-bottom:40px;">${emotions[i].title}</h2>`;
-            emotions[i].content.forEach(item => {
-                let popup = `<div class="verse-popup">
-                    <div>${item.english}</div>
-                    <audio controls><source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAo="></audio>
-                    <button onclick="navigator.clipboard.writeText('${item.arabic}')">نسخ</button>
-                </div>`;
-                if (item.type === 'quran' || item.type === 'dua') {
-                    html += `<div class="verse ${item.type}" onmouseenter="this.querySelector('.verse-popup').style.display='block'" onmouseleave="this.querySelector('.verse-popup').style.display='none'">${popup}
-                        <div class="arabic">${item.arabic}</div><div class="english">${item.english}</div><div class="reference">${item.ref}</div>
-                    </div>`;
-                } else html += `<div class="hadith">${item.text} <div class="reference">${item.ref}</div></div>`;
-            });
-            html += `<p style="text-align:center; font-size:1.3rem; padding:25px; background:rgba(var(--gold-primary),0.15); border-radius:25px; margin-top:30px;">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً</p>`;
-            modal.innerHTML = `<div class="modal-content">${html}</div>`;
-            document.body.appendChild(modal); modal.style.display = 'block';
-            modal.querySelector('.close').onclick = () => modal.remove();
-            modal.onclick = e => e.target === modal && modal.remove();
+        const data = {
+            'Sadness': {
+                arabic: 'وَلَا تَهِنُوا وَلَا تَحْزَنُوا',
+                english: 'Do not weaken and do not grieve, for you will be superior if you are true believers.',
+                ref: 'Surah Ali \'Imran 3:139'
+            },
+            'Anger': {
+                arabic: 'وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ',
+                english: '...and who restrain anger and who pardon the people - and Allah loves the doers of good.',
+                ref: 'Surah Ali \'Imran 3:134'
+            },
+            'Anxiety': {
+                arabic: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',
+                english: 'Unquestionably, by the remembrance of Allah do hearts find rest.',
+                ref: 'Surah Ar-Ra\'d 13:28'
+            },
+            'Loneliness': {
+                arabic: 'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',
+                english: 'And We are closer to him than his jugular vein.',
+                ref: 'Surah Qaf 50:16'
+            },
+            'Stress': {
+                arabic: 'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا',
+                english: 'Allah does not charge a soul except [with that within] its capacity.',
+                ref: 'Surah Al-Baqarah 2:286'
+            },
+            'Patience': {
+                arabic: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',
+                english: 'Indeed, Allah is with the patient.',
+                ref: 'Surah Al-Baqarah 2:153'
+            }
+        };
+
+        function showHealing(emotion) {
+            const item = data[emotion];
+            document.getElementById('modal-title').innerText = emotion.toUpperCase();
+            document.getElementById('modal-body').innerHTML = `
+                <div class="verse-box">
+                    <div class="arabic-text">${item.arabic}</div>
+                    <div class="english-text">${item.english}</div>
+                    <div class="ref">${item.ref}</div>
+                </div>
+            `;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside content
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('modal')) {
+                closeModal();
+            }
         }
     </script>
 </body>
