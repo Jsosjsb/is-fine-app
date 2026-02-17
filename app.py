@@ -109,7 +109,7 @@ if st.session_state.page == "home":
         if st.button("🖼 Image to PDF", use_container_width=True):
             st.session_state.page = "convert"
     with col2:
-        if st.button("📄 Past Exam Papers", use_container_width=True):
+        if st.button("📄 Previous Exam Papers", use_container_width=True):
             st.session_state.page = "exam"
     with col3:
         if st.button("📊 Analytics Dashboard", use_container_width=True):
@@ -296,6 +296,7 @@ st.markdown(f"""
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
