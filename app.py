@@ -103,20 +103,29 @@ if st.session_state.page == "home":
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4) # Changed to 4 columns
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
 
     with col1:
         if st.button("🖼 Image to PDF", use_container_width=True):
             st.session_state.page = "convert"
     with col2:
-        if st.button("📄 Previous Exam Papers", use_container_width=True):
+        if st.button("📄 Exam Papers", use_container_width=True):
             st.session_state.page = "exam"
     with col3:
-        if st.button("📊 Analytics Dashboard", use_container_width=True):
+        if st.button("📊 Analytics", use_container_width=True):
             st.session_state.page = "analytics"
     with col4:
-        if st.button("🧠 Test Yourself", use_container_width=True):
+        if st.button("🧠 Aptitude Test", use_container_width=True):
             st.session_state.page = "quiz"
+    # NEW BOX 1
+    with col5:
+        if st.button("🌙 Islamic Tranquility", use_container_width=True):
+            st.session_state.page = "islamic"
+    # NEW BOX 2
+    with col6:
+        if st.button("📝 B.Com MCQs", use_container_width=True):
+            st.session_state.page = "mcq_bank"
 
 # ================= IMAGE TO PDF =================
 elif st.session_state.page == "convert":
@@ -289,13 +298,36 @@ elif st.session_state.page == "quiz":
 
     if st.button("⬅ Back to Home", type="secondary"):
         st.session_state.page = "home"
+# ================= ISLAMIC TRANQUILITY =================
+elif st.session_state.page == "islamic":
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+        st.rerun()
 
+    with open("islammmm.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    
+    import streamlit.components.v1 as components
+    components.html(html_content, height=800, scrolling=True)
+
+# ================= MCQ BANK =================
+elif st.session_state.page == "mcq_bank":
+    if st.button("⬅ Back to Home"):
+        st.session_state.page = "home"
+        st.rerun()
+
+    with open("mcq.html", "r", encoding="utf-8") as f:
+        mcq_html = f.read()
+    
+    import streamlit.components.v1 as components
+    components.html(mcq_html, height=800, scrolling=True)
 # ================= EMAIL =================
 st.markdown(f"""
 <div class="email">
 📧 Contact: {EMAIL}
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
