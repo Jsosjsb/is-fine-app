@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Sakina | Islamic Tranquility</title>
+    <title>Al-Sakina | Spiritual Peace</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy-deep: #0a0e3a;
-            --gold-primary: #e6c547;
-            --gold-metallic: #FFD700;
-            --cream-light: #f8f1d9;
-            --glass: rgba(255, 255, 255, 0.07);
+            --navy-dark: #0A192F;
+            --navy-light: #112240;
+            --gold-accent: #64FFDA; 
+            --platinum: #CCD6F6;
+            --glass: rgba(255, 255, 255, 0.05);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: 'Montserrat', sans-serif;
-            background: radial-gradient(circle at top, #1a1f5a, var(--navy-deep));
-            color: var(--cream-light);
+            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%);
+            color: var(--platinum);
             min-height: 100vh;
             padding: 15px;
             display: flex;
@@ -27,191 +27,155 @@
             align-items: center;
         }
 
-        header { text-align: center; padding: 30px 0; width: 100%; }
-        
-        h1 {
-            font-family: 'Amiri', serif;
-            font-size: 2.2rem;
-            background: linear-gradient(to bottom, var(--gold-metallic), var(--gold-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-        }
+        header { text-align: center; padding: 25px 0; width: 100%; }
+        h1 { font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--platinum); letter-spacing: 2px; }
+        .subtitle { font-size: 0.75rem; color: var(--gold-accent); text-transform: uppercase; letter-spacing: 3px; }
 
-        .subtitle { font-size: 0.8rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Stable Grid for Mobile */
         .emotions-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Forces 2 columns on mobile */
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             width: 100%;
             max-width: 500px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .emotion-box {
             background: var(--glass);
-            border: 1px solid rgba(230,197,71,0.2);
-            border-radius: 18px;
-            padding: 20px 10px;
+            border: 1px solid rgba(100, 255, 218, 0.2);
+            border-radius: 15px;
+            padding: 22px 10px;
             text-align: center;
             transition: all 0.2s ease;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
-        .emotion-box:active {
-            transform: scale(0.96);
-            background: rgba(230,197,71,0.15);
-            border-color: var(--gold-primary);
-        }
+        .emotion-box:active { transform: scale(0.95); background: rgba(100, 255, 218, 0.1); }
+        .icon { font-size: 2rem; margin-bottom: 8px; display: block; }
+        .title { font-weight: 600; font-size: 0.85rem; color: var(--gold-accent); letter-spacing: 1px; }
 
-        .icon { font-size: 2.2rem; margin-bottom: 8px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
-        .title { font-weight: 600; font-size: 0.9rem; color: var(--gold-primary); letter-spacing: 1px; }
-
-        /* Modal / Popup */
         .modal { 
             display: none; position: fixed; inset: 0; 
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            background: rgba(10, 25, 47, 0.95); backdrop-filter: blur(10px);
             z-index: 1000; padding: 20px;
             align-items: center; justify-content: center;
         }
+
         .modal-content {
-            background: linear-gradient(145deg, #0f1442, #070a2b);
-            border: 1px solid var(--gold-primary);
-            border-radius: 25px;
+            background: var(--navy-light);
+            border: 1px solid var(--gold-accent);
+            border-radius: 20px;
             padding: 25px;
             width: 100%;
             max-width: 400px;
+            max-height: 85vh;
+            overflow-y: auto;
             position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s ease-out;
         }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .close { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: var(--gold-primary); cursor: pointer; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--gold-accent); cursor: pointer; }
 
         .verse-box {
-            background: rgba(0,0,0,0.3);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-            border-right: 3px solid var(--gold-primary);
-            text-align: right;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 3px solid var(--gold-accent);
         }
-        .arabic-text { font-family: 'Amiri', serif; font-size: 1.5rem; color: var(--gold-metallic); margin-bottom: 12px; line-height: 1.6; }
-        .english-text { font-size: 0.9rem; line-height: 1.5; color: #fff; text-align: left; direction: ltr; font-weight: 300; }
-        .ref { font-size: 0.75rem; color: var(--gold-primary); margin-top: 12px; font-weight: 600; text-align: left; text-transform: uppercase; }
+
+        .arabic-text { font-family: 'Amiri', serif; font-size: 1.4rem; color: #fff; margin-bottom: 10px; text-align: right; direction: rtl; line-height: 1.6; }
+        .english-text { font-size: 0.85rem; line-height: 1.4; color: var(--platinum); text-align: left; font-weight: 300; }
+        .type-tag { font-size: 0.65rem; color: var(--gold-accent); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .ref { font-size: 0.65rem; color: var(--gold-accent); margin-top: 8px; opacity: 0.8; }
         
-        footer { margin-top: auto; padding: 20px; font-size: 0.7rem; opacity: 0.5; letter-spacing: 1px; }
+        footer { margin-top: 40px; padding: 20px; font-size: 0.6rem; opacity: 0.4; letter-spacing: 1px; text-align: center; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>AL-SAKINA</h1>
-        <p class="subtitle">Spiritual Healing & Peace</p>
+        <p class="subtitle">Spiritual Healing</p>
     </header>
     
     <div class="emotions-grid">
-        <div class="emotion-box" onclick="showHealing('Sadness')">
-            <span class="icon">😢</span>
-            <span class="title">SADNESS</span>
+        <div class="emotion-box" onclick="openMe('Sadness')">
+            <span class="icon">😢</span><span class="title">SADNESS</span>
         </div>
-        <div class="emotion-box" onclick="showHealing('Anger')">
-            <span class="icon">😡</span>
-            <span class="title">ANGER</span>
+        <div class="emotion-box" onclick="openMe('Anger')">
+            <span class="icon">😡</span><span class="title">ANGER</span>
         </div>
-        <div class="emotion-box" onclick="showHealing('Anxiety')">
-            <span class="icon">😰</span>
-            <span class="title">ANXIETY</span>
+        <div class="emotion-box" onclick="openMe('Anxiety')">
+            <span class="icon">😰</span><span class="title">ANXIETY</span>
         </div>
-        <div class="emotion-box" onclick="showHealing('Loneliness')">
-            <span class="icon">😔</span>
-            <span class="title">LONELY</span>
+        <div class="emotion-box" onclick="openMe('Lonely')">
+            <span class="icon">😔</span><span class="title">LONELY</span>
         </div>
-        <div class="emotion-box" onclick="showHealing('Stress')">
-            <span class="icon">😫</span>
-            <span class="title">STRESS</span>
+        <div class="emotion-box" onclick="openMe('Stress')">
+            <span class="icon">😫</span><span class="title">STRESS</span>
         </div>
-        <div class="emotion-box" onclick="showHealing('Patience')">
-            <span class="icon">⏳</span>
-            <span class="title">PATIENCE</span>
+        <div class="emotion-box" onclick="openMe('Patience')">
+            <span class="icon">⏳</span><span class="title">PATIENCE</span>
         </div>
     </div>
 
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title" style="color:var(--gold-primary); text-align:center; font-size:1.2rem; letter-spacing:2px;"></h2>
-            <div id="modal-body"></div>
+            <span class="close" onclick="closeMe()">&times;</span>
+            <h2 id="m-title" style="color:var(--gold-accent); text-align:center; font-size:1.1rem; letter-spacing:2px; margin-bottom:15px;"></h2>
+            <div id="m-body"></div>
         </div>
     </div>
 
-    <footer>© 2026 UNI-FIREEE SPIRITUAL</footer>
+    <footer>CREATED BY BILAL SHAIKH | © 2026</footer>
 
     <script>
-        const data = {
-            'Sadness': {
-                arabic: 'وَلَا تَهِنُوا وَلَا تَحْزَنُوا',
-                english: 'Do not weaken and do not grieve, for you will be superior if you are true believers.',
-                ref: 'Surah Ali \'Imran 3:139'
-            },
-            'Anger': {
-                arabic: 'وَالْكَاظِمِينَ الْغَيْظَ وَالْعَافِينَ عَنِ النَّاسِ',
-                english: '...and who restrain anger and who pardon the people - and Allah loves the doers of good.',
-                ref: 'Surah Ali \'Imran 3:134'
-            },
-            'Anxiety': {
-                arabic: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ',
-                english: 'Unquestionably, by the remembrance of Allah do hearts find rest.',
-                ref: 'Surah Ar-Ra\'d 13:28'
-            },
-            'Loneliness': {
-                arabic: 'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ',
-                english: 'And We are closer to him than his jugular vein.',
-                ref: 'Surah Qaf 50:16'
-            },
-            'Stress': {
-                arabic: 'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا',
-                english: 'Allah does not charge a soul except [with that within] its capacity.',
-                ref: 'Surah Al-Baqarah 2:286'
-            },
-            'Patience': {
-                arabic: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ',
-                english: 'Indeed, Allah is with the patient.',
-                ref: 'Surah Al-Baqarah 2:153'
-            }
+        const content = {
+            'Sadness': [
+                {t:'Quran', a:'وَلَا تَهِنُوا وَلَا تَحْزَنُوا', e:'Do not weaken and do not grieve, for you will be superior if you are true believers.', r:'Surah Ali \'Imran 3:139'},
+                {t:'Dua', a:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ', e:'O Allah, I seek refuge in You from worry and grief.', r:'Sahih Bukhari'}
+            ],
+            'Anger': [
+                {t:'Hadith', a:'لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ، إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ', e:'The strong is not the one who overcomes the people by his strength, but the one who controls himself while in anger.', r:'Sahih Bukhari'},
+                {t:'Dua', a:'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ', e:'I seek refuge in Allah from Shaitan, the rejected.', r:'Protection from Anger'}
+            ],
+            'Anxiety': [
+                {t:'Quran', a:'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ', e:'Unquestionably, by the remembrance of Allah do hearts find rest.', r:'Surah Ar-Ra\'d 13:28'},
+                {t:'Dua', a:'يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ', e:'O Ever Living, O Sustainer, in Your Mercy I seek relief.', r:'Sunan al-Tirmidhi'}
+            ],
+            'Lonely': [
+                {t:'Quran', a:'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ', e:'And We are closer to him than his jugular vein.', r:'Surah Qaf 50:16'},
+                {t:'Hadith', a:'مَا يَكُونُ مِنْ نَجْوَى ثَلَاثَةٍ إِلَّا هُوَ رَابِعُهُمْ', e:'There is no secret consultation between three except that He is their fourth.', r:'Surah Al-Mujadila 58:7'}
+            ],
+            'Stress': [
+                {t:'Quran', a:'لَا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَهَا', e:'Allah does not charge a soul except [with that within] its capacity.', r:'Surah Al-Baqarah 2:286'},
+                {t:'Dua', a:'حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ', e:'Allah is sufficient for me. There is no god but He. In Him I have put my trust.', r:'Surah At-Tawbah 9:129'}
+            ],
+            'Patience': [
+                {t:'Quran', a:'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ', e:'Indeed, Allah is with the patient.', r:'Surah Al-Baqarah 2:153'},
+                {t:'Hadith', a:'وَمَا أُعْطِيَ أَحَدٌ عَطَاءً خَيْرًا وَأَوْسَعَ مِنَ الصَّبْرِ', e:'No one is given a gift better and more extensive than patience.', r:'Sahih Bukhari'}
+            ]
         };
 
-        function showHealing(emotion) {
-            const item = data[emotion];
-            document.getElementById('modal-title').innerText = emotion.toUpperCase();
-            document.getElementById('modal-body').innerHTML = `
+        function openMe(key) {
+            const items = content[key];
+            document.getElementById('m-title').innerText = key.toUpperCase();
+            let html = '';
+            items.forEach(item => {
+                html += `
                 <div class="verse-box">
-                    <div class="arabic-text">${item.arabic}</div>
-                    <div class="english-text">${item.english}</div>
-                    <div class="ref">${item.ref}</div>
-                </div>
-            `;
+                    <span class="type-tag">${item.t}</span>
+                    <div class="arabic-text">${item.a}</div>
+                    <div class="english-text">${item.e}</div>
+                    <div class="ref">${item.r}</div>
+                </div>`;
+            });
+            document.getElementById('m-body').innerHTML = html;
             document.getElementById('modal').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside content
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('modal')) {
-                closeModal();
-            }
-        }
+        function closeMe() { document.getElementById('modal').style.display = 'none'; }
+        window.onclick = e => { if (e.target.id == 'modal') closeMe(); }
     </script>
 </body>
 </html>
