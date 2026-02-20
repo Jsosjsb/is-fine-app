@@ -3,231 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite B.Com Prep | Luxury Edition</title>
+    <title>Elite B.Com Prep | Luxury Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Colors inspired by your Islamic file */
+            /* Exact Palette from islammmm.html */
             --navy-deep: #0a0e3a;
             --purple-gold: #3a0f5f;
             --gold-primary: #e6c547;
-            --gold-light: #f1d592;
-            --glass: rgba(255, 255, 255, 0.05);
+            --gold-soft: #f8f1d9;
+            --glass: rgba(255, 255, 255, 0.03);
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * { margin:0; padding:0; box-sizing:border-box; }
         
         body {
-            /* Luxury Gradient from islammmm.html */
+            /* The specific luxury gradient from your provided file */
             background: linear-gradient(135deg, var(--navy-deep) 0%, var(--purple-gold) 100%);
             background-attachment: fixed;
-            color: #e6d9b3;
+            color: var(--gold-soft);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
+        /* Luxury Decorative Border (Top/Bottom) */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            z-index: 9999;
+        }
+        body::before { top: 0; }
+        body::after { bottom: 0; }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
         .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-        
         header { text-align: center; padding-bottom: 60px; }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-size: clamp(2.5rem, 8vw, 4rem);
             color: var(--gold-primary);
             text-transform: uppercase;
-            letter-spacing: 10px;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-bottom: 0.5rem;
+            letter-spacing: 12px;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         .tagline {
-            font-size: 0.9rem;
-            letter-spacing: 5px;
+            font-size: 0.8rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            color: var(--gold-light);
-            opacity: 0.8;
+            color: var(--gold-primary);
+            opacity: 0.7;
         }
 
+        /* Buttons */
         .lux-btn {
-            background: transparent;
+            background: rgba(230, 197, 71, 0.05);
             border: 1px solid var(--gold-primary);
             color: var(--gold-primary);
-            padding: 16px 40px;
-            font-size: 0.85rem;
-            letter-spacing: 3px;
+            padding: 18px 45px;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
             text-transform: uppercase;
             cursor: pointer;
             transition: var(--transition);
             margin: 10px;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
 
         .lux-btn:hover {
             background: var(--gold-primary);
             color: var(--navy-deep);
-            box-shadow: 0 0 30px rgba(230, 197, 71, 0.4);
-            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(230, 197, 71, 0.3);
+            transform: translateY(-3px);
         }
 
+        /* Grid & Cards */
         .subject-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .subject-card {
             background: var(--glass);
-            border: 1px solid rgba(230, 197, 71, 0.2);
-            padding: 45px 30px;
-            backdrop-filter: blur(15px);
+            border: 1px solid rgba(230, 197, 71, 0.15);
+            padding: 50px 30px;
+            backdrop-filter: blur(20px);
             transition: var(--transition);
             cursor: pointer;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 2px;
+            animation: fadeIn 0.8s ease-out;
         }
 
         .subject-card:hover {
             border-color: var(--gold-primary);
-            background: rgba(230, 197, 71, 0.1);
+            background: rgba(230, 197, 71, 0.08);
             transform: translateY(-10px);
         }
 
         .subject-card h3 { 
             font-family: 'Playfair Display', serif; 
             color: var(--gold-primary);
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
         }
 
         .question-card {
             background: rgba(0, 0, 0, 0.2);
-            padding: 35px;
-            margin-bottom: 25px;
-            border-right: 4px solid var(--gold-primary);
-            border-radius: 4px;
-            animation: fadeIn 0.5s ease-out;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-left: 2px solid var(--gold-primary);
+            animation: fadeIn 0.5s forwards;
         }
 
         .options label {
             display: block;
             padding: 18px;
-            margin: 12px 0;
-            border: 1px solid rgba(230, 197, 71, 0.1);
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             cursor: pointer;
             transition: 0.3s;
-            border-radius: 4px;
         }
 
         .options label:hover { 
-            background: rgba(230, 197, 71, 0.05);
+            background: rgba(230, 197, 71, 0.1); 
             border-color: var(--gold-primary);
         }
 
-        /* Match the Pair Background Blending */
-        .match-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
-        .match-table td { padding: 15px; background: rgba(0,0,0,0.1); }
+        /* MATCH THE PAIR - FULL COLOR MATCH */
+        .match-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
+        .match-table td { padding: 10px 20px; }
         
         select.match-select {
             width: 100%;
-            padding: 12px;
-            background-color: #141646; /* Matching the Navy background */
+            padding: 15px;
+            /* Matches the deep indigo section of the background */
+            background-color: #1a1e4d; 
             color: var(--gold-primary);
             border: 1px solid rgba(230, 197, 71, 0.3);
-            border-radius: 2px;
+            border-radius: 0;
             outline: none;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e6c547' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 15px center;
+            background-position: right 20px center;
         }
 
         .back-btn {
             position: fixed;
-            top: 30px;
-            left: 30px;
+            top: 40px;
+            left: 40px;
             color: var(--gold-primary);
-            font-size: 0.75rem;
-            letter-spacing: 3px;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
             z-index: 1000;
             cursor: pointer;
-            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .hidden { display: none !important; }
 
         .result-box {
             text-align: center;
-            border: 2px solid var(--gold-primary);
-            padding: 80px 40px;
+            border: 1px solid var(--gold-primary);
+            padding: 100px 50px;
             background: var(--glass);
         }
 
         .score-big {
-            font-size: 6rem;
+            font-size: 7rem;
             font-family: 'Playfair Display', serif;
             color: var(--gold-primary);
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
 
-<div class="back-btn hidden" onclick="goHome()">✦ BACK TO HOME</div>
+<div class="back-btn hidden" onclick="goHome()">← Back to Menu</div>
 
-<div id="home" class="container fade-in">
+<div id="home" class="container">
     <header>
-        <h1>Elite B.Com</h1>
-        <p class="tagline">Premium Academic Portfolio</p>
-        <div style="margin-top:60px;">
-            <button class="lux-btn" onclick="showSection('mcq-section')">MCQ Questions</button>
-            <button class="lux-btn" onclick="showSection('match-section')">Match the Pair</button>
+        <h1 class="fade-in">Elite Academy</h1>
+        <p class="tagline fade-in">T.Y.B.Com Luxury Learning Suite</p>
+        <div style="margin-top:60px;" class="fade-in">
+            <button class="lux-btn" onclick="showSection('mcq-section')">MCQ Assessment</button>
+            <button class="lux-btn" onclick="showSection('match-section')">Matrix Matching</button>
             <button class="lux-btn" onclick="showDashboard()">Dashboard</button>
         </div>
     </header>
 </div>
 
 <div id="mcq-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:2.5rem; letter-spacing:3px;">Select Your Subject</h2>
+    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem; letter-spacing:4px;">Assessments</h2>
     <div class="subject-grid" id="mcq-grid"></div>
 </div>
 
 <div id="match-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:2.5rem; letter-spacing:3px;">Subject Match Matrix</h2>
+    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem; letter-spacing:4px;">Connect Logic</h2>
     <div class="subject-grid" id="match-grid"></div>
 </div>
 
 <div id="practice-area" class="container hidden">
-    <h2 id="practice-title" style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; margin-bottom:2.5rem; font-size:2rem;"></h2>
+    <h2 id="practice-title" style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; margin-bottom:3rem; font-size:2.2rem;"></h2>
     <form id="quiz-form"></form>
     <div style="text-align:center; margin-top:50px;">
-        <button class="lux-btn" onclick="submitQuiz()">Complete Assessment</button>
+        <button class="lux-btn" onclick="submitQuiz()">Submit Portfolio</button>
     </div>
 </div>
 
 <div id="result" class="container hidden">
     <div class="result-box">
-        <h2 style="letter-spacing:8px; color:var(--gold-light);">RESULTS ANALYSIS</h2>
+        <h2 style="letter-spacing:10px; color:rgba(255,255,255,0.5);">PERFORMANCE SCORE</h2>
         <div class="score-big" id="score-display">0/0</div>
-        <p id="percentage" style="font-size:1.4rem; color:var(--gold-primary); margin-bottom:3rem;"></p>
-        <button class="lux-btn" onclick="goHome()">Return to Portfolio</button>
+        <p id="percentage" style="font-size:1.5rem; margin-bottom:3rem;"></p>
+        <button class="lux-btn" onclick="goHome()">Return Home</button>
     </div>
 </div>
 
 <div id="dashboard" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem;">Performance Dashboard</h2>
-    <div id="scores-list"></div>
+    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem;">Analytics</h2>
+    <div id="scores-list" style="text-align:center; color:var(--gold-soft); font-size:1.2rem;">All systems operational. Subject data synced.</div>
 </div>
 
 <script>
@@ -235,7 +245,7 @@ const mcqData = {
     "Marketing Management II": [
         {q:"Marketing mix consists of ______ P's.",o:["3","4","7","8"],a:"4"},
         {q:"______ is the process of dividing a market into distinct groups.",o:["Targeting","Positioning","Segmentation","Branding"],a:"Segmentation"},
-        {q:"Goods move from producer to consumer via ______.",o:["Promotion","Pricing","Distribution","PLC"],a:"Distribution"},
+        {q:"The path goods move from producer to consumer is ______.",o:["Promotion","Pricing","Distribution","PLC"],a:"Distribution"},
         {q:"______ is a paid form of non-personal presentation.",o:["Publicity","Sales Promotion","Advertising","Personal Selling"],a:"Advertising"},
         {q:"Internal factor affecting pricing is ______.",o:["Competition","Demand","Production Cost","Policy"],a:"Production Cost"},
         {q:"First stage of Product Life Cycle is ______.",o:["Growth","Maturity","Introduction","Decline"],a:"Introduction"},
@@ -267,36 +277,36 @@ const mcqData = {
         {q:"Customer satisfaction results in ______.",o:["Satisfaction","Loyalty","Relation","Growth"],a:"Satisfaction"}
     ],
     "Business Economics": [
-        {q:"HDI was released in ______.",o:["1947","1950","1990","2014"],a:"1990"},
-        {q:"F.D.I. stands for ______.",o:["Direct Investment","Intervention","Domestic","Fast"],a:"Direct Investment"},
+        {q:"The Human development index released from ______.",o:["1947","1950","1990","2014"],a:"1990"},
+        {q:"F.D.I. stands for ______.",o:["Foreign direct investment","Intervention","Domestic","Fast"],a:"Foreign direct investment"},
         {q:"India is the founder member of ______.",o:["ASIAN","SAARC","USA","UAE"],a:"SAARC"},
         {q:"International trade means ______.",o:["Between regions","Between countries","Between provinces","Between states"],a:"Between countries"},
-        {q:"The MPI index is released by ______.",o:["World Bank","World Economic Forum","U.N.D.P.","Asian bank"],a:"U.N.D.P."},
+        {q:"The Multidimensional Poverty Index (M.P.I) is by ______.",o:["World Bank","Economic Forum","U.N.D.P.","Asian bank"],a:"U.N.D.P."},
         {q:"Systematic record of economic transactions is ______.",o:["Balance of Trade","Transactions","Budget","Balance of payments"],a:"Balance of payments"},
-        {q:"Organisation publishing HDI report is ______.",o:["World Bank","Economic Forum","IMF","UNDP"],a:"UNDP"},
+        {q:"Organisation publishes HDI report is ______.",o:["World Bank","Economic Forum","IMF","UNDP"],a:"UNDP"},
+        {q:"F.D.I stands for ______.",o:["Direct Index","Direct Investment","Future domestic","Dev index"],a:"Direct Investment"},
         {q:"IMF was established in ______.",o:["1944","1945","1996","1995"],a:"1945"},
         {q:"Currently ______ countries are members of SAARC.",o:["11","9","8","10"],a:"8"},
         {q:"Special Drawing Rights (SDR) is related to ______.",o:["World Bank","IMF","RBI","UNO"],a:"IMF"},
         {q:"SAARC headquarters is located in ______.",o:["Kathmandu","Manila","New Delhi","Mumbai"],a:"Kathmandu"},
         {q:"Govt policy for import-export is ______.",o:["Financial","Monetary","Foreign trade","Fiscal"],a:"Foreign trade"},
         {q:"India is founder member of ______.",o:["E.U.","U.S.A.","OPEC","BRICS"],a:"BRICS"},
-        {q:"Engine of economic development is ______.",o:["Domestic trade","National Income","National trade","International trade"],a:"International trade"},
-        {q:"Global trade involves ______ currencies.",o:["Single","Multiple","Local","Barter"],a:"Multiple"}
+        {q:"Engine of economic development is ______.",o:["Domestic trade","National Income","National trade","International trade"],a:"International trade"}
     ],
     "Advanced Accounting II": [
         {q:"Stock Turnover Ratio is a ______ Ratio.",o:["Liquidity","Turnover","Solvency","Profitability"],a:"Turnover"},
         {q:"Foreign country branch is called ______.",o:["Domestic","Foreign","Home","Inland"],a:"Foreign"},
         {q:"Co-op transfer profit to Reserve fund at ______.",o:["20%","25%","30%","35%"],a:"25%"},
-        {q:"Asset + Liability ratio check is ______.",o:["Current","Liquid","Quick","Capital"],a:"Quick"},
+        {q:"Current Assets + Current Liabilities = ______.",o:["Current","Liquid","Quick","Working"],a:"Quick"},
         {q:"Co-op society members have ______ liability.",o:["Unlimited","Joint","Limited","Several"],a:"Limited"},
-        {q:"Full form of AI is ______.",o:["Intelligence","Intelligence","Intelligent","Intelligence"],a:"Artificial Intelligence"},
+        {q:"Full form of AI is ______.",o:["Artificial Intelligence","Artificially Intel","Advance Info","Actual Int"],a:"Artificial Intelligence"},
         {q:"Formation not for profit is ______.",o:["Co-op","Public","HUF","Private"],a:"Co-op"},
         {q:"Dividend on shares comes to ______ side of P&L.",o:["Income","Expenditure","Interest","Loss"],a:"Income"},
-        {q:"Dependent branch is also known as ______.",o:["Foreign","Independent","Small System","None"],a:"Small System"},
+        {q:"Small system branch is also known as ______.",o:["Foreign","Dependent","Independent","None"],a:"Dependent"},
         {q:"Branch a/c is prepared to find ______.",o:["Profit/Loss","Finance","Assets","None"],a:"Profit/Loss"},
         {q:"Petty Cash Book maintains ______.",o:["Large expenses","Small expenses","Banking","Sales"],a:"Small expenses"},
         {q:"Debt to equity relates to ______.",o:["Current assets","Liabilities","Owner equity","None"],a:"Owner equity"},
-        {q:"Quick ratio ideal is ______.",o:["1:1","2:1","1:2","3:1"],a:"1:1"},
+        {q:"A quick ratio of ______ is ideal.",o:["1:1","2:1","1:2","3:1"],a:"1:1"},
         {q:"Cost of Goods Sold / Avg Stock = ______.",o:["Debt","Stock Turnover","Margin","Ratio"],a:"Stock Turnover"},
         {q:"Working capital is Current Assets minus ______.",o:["Fixed Assets","Current Liabilities","Long debt","Stock"],a:"Current Liabilities"}
     ],
@@ -305,7 +315,7 @@ const mcqData = {
         {q:"Digital signature suspension section ______.",o:["35","36","37"],a:"37"},
         {q:"CPA 2019 came into force in ______.",o:["20 July 2020","1 April","31 Dec"],a:"20 July 2020"},
         {q:"Copyright for photo is ______ years.",o:["40","50","60"],a:"60"},
-        {q:"Consumer Forum section is ______.",o:["35","37","38"],a:"38"},
+        {q:"Forum section is ______.",o:["35","37","38"],a:"38"},
         {q:"Bill on banker is ______.",o:["Note","Cheque","Bill"],a:"Cheque"},
         {q:"Negotiable Act passed in ______.",o:["1881","1872","1930"],a:"1881"},
         {q:"Electronic media trade is ______.",o:["E-Commerce","Comm","Mgmt"],a:"E-Commerce"},
@@ -352,18 +362,9 @@ window.onload = function() {
     const matchGrid = document.getElementById('match-grid');
 
     subjects.forEach(sub => {
-        mcqGrid.innerHTML += `
-            <div class="subject-card fade-in" onclick="startPractice('${sub}', 'mcq')">
-                <h3>${sub}</h3>
-                <p style="color:var(--gold-light); font-size:0.75rem; letter-spacing:2px;">15 MODULES ACTIVE</p>
-            </div>`;
-        
-        const status = matchData[sub] ? "MATRIX ACTIVE" : "SYNCHRONIZING...";
-        matchGrid.innerHTML += `
-            <div class="subject-card fade-in" onclick="startPractice('${sub}', 'match')">
-                <h3>${sub}</h3>
-                <p style="color:var(--gold-light); font-size:0.75rem; letter-spacing:2px;">${status}</p>
-            </div>`;
+        mcqGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'mcq')"><h3>${sub}</h3><p style="color:var(--gold-primary); font-size:0.7rem; letter-spacing:2px;">15 QUESTIONS ACTIVE</p></div>`;
+        const mStatus = matchData[sub] ? "ACTIVE" : "COMING SOON";
+        matchGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'match')"><h3>${sub}</h3><p style="color:var(--gold-primary); font-size:0.7rem; letter-spacing:2px;">MODULE: ${mStatus}</p></div>`;
     });
 };
 
@@ -388,7 +389,7 @@ function startPractice(subject, type) {
         qs.forEach((item, i) => {
             const div = document.createElement('div');
             div.className = 'question-card';
-            div.innerHTML = `<p style="font-size:1.2rem; margin-bottom:15px; color:var(--gold-primary)">✦ Q${i+1}. ${item.q}</p><div class="options">`;
+            div.innerHTML = `<p style="font-size:1.2rem; margin-bottom:15px; color:var(--gold-primary)">Q${i+1}. ${item.q}</p><div class="options">`;
             item.o.forEach(opt => {
                 div.innerHTML += `<label><input type="radio" name="q${i}" value="${opt}" style="margin-right:10px; accent-color:var(--gold-primary)"> ${opt}</label>`;
             });
@@ -397,7 +398,7 @@ function startPractice(subject, type) {
         });
     } else {
         if (!matchData[subject]) {
-            form.innerHTML = "<p style='text-align:center; padding:50px; color:var(--gold-light);'>Module optimization in progress...</p>";
+            form.innerHTML = "<p style='text-align:center; padding:50px; color:var(--gold-primary);'>Matching matrix is being synchronized.</p>";
         } else {
             const left = matchData[subject][0];
             const right = [...matchData[subject][1]].sort(() => Math.random() - 0.5);
@@ -405,12 +406,7 @@ function startPractice(subject, type) {
             left.forEach((l, i) => {
                 html += `<tr>
                     <td style="color:var(--gold-primary); font-weight:600; width:45%">${l}</td>
-                    <td>
-                        <select class="match-select">
-                            <option value=\"\">Select Pair Pair...</option>
-                            ${right.map(r => `<option value="${r}">${r}</option>`).join('')}
-                        </select>
-                    </td>
+                    <td><select class="match-select"><option value=\"\">Select Pair...</option>${right.map(r => `<option value="${r}">${r}</option>`).join('')}</select></td>
                 </tr>`;
             });
             html += "</table></div>";
@@ -421,8 +417,7 @@ function startPractice(subject, type) {
 }
 
 function submitQuiz() {
-    let score = 0;
-    let total = 0;
+    let score = 0; let total = 0;
     if (currentType === 'mcq') {
         const qs = mcqData[currentSubject];
         total = qs.length;
@@ -433,20 +428,14 @@ function submitQuiz() {
     } else if (matchData[currentSubject]) {
         const selects = document.querySelectorAll('.match-select');
         total = selects.length;
-        selects.forEach((sel, i) => {
-            if (sel.value === matchData[currentSubject][1][i]) score++;
-        });
+        selects.forEach((sel, i) => { if (sel.value === matchData[currentSubject][1][i]) score++; });
     }
     document.getElementById('score-display').innerText = `${score}/${total}`;
     document.getElementById('percentage').innerText = `${((score/total)*100).toFixed(0)}% SUCCESS RATE`;
     showSection('result');
 }
 
-function showDashboard() {
-    const list = document.getElementById('scores-list');
-    list.innerHTML = "<p style='text-align:center; color:var(--gold-light);'>Real-time analytical data synchronized for all 6 subjects.</p>";
-    showSection('dashboard');
-}
+function showDashboard() { showSection('dashboard'); }
 </script>
 </body>
 </html>
