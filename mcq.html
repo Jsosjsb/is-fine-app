@@ -2,354 +2,281 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite B.Com Prep | Luxury Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite B.Com Prep | Mobile Luxury</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Exact Palette from islammmm.html */
-            --navy-dark: #0A192F;
-            --navy-light: #112240;
+            --navy-deep: #0a0e3a;
+            --purple-gold: #3a0f5f;
             --gold-primary: #e6c547;
             --gold-soft: #f8f1d9;
             --glass: rgba(255, 255, 255, 0.05);
-            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { 
+            margin:0; padding:0; box-sizing:border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
         
         body {
-            /* The specific luxury gradient from your provided file */
-            background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-light) 100%);
+            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--purple-gold) 100%);
             background-attachment: fixed;
             color: var(--gold-soft);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
-            line-height: 1.6;
-            overflow-x: hidden;
+            line-height: 1.5;
         }
 
-        /* Luxury Decorative Border (Top/Bottom) */
-        body::before, body::after {
-            content: "";
-            position: fixed;
-            left: 0; width: 100%; height: 5px;
-            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
-            z-index: 9999;
-        }
-        body::before { top: 0; }
-        body::after { bottom: 0; }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
-        header { text-align: center; padding-bottom: 60px; }
+        header { text-align: center; padding: 30px 10px; }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-size: clamp(2rem, 10vw, 3.5rem);
             color: var(--gold-primary);
             text-transform: uppercase;
-            letter-spacing: 12px;
-            margin-bottom: 1rem;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            letter-spacing: 4px;
         }
 
         .tagline {
-            font-size: 0.8rem;
-            letter-spacing: 6px;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--gold-primary);
-            opacity: 0.7;
+            opacity: 0.8;
         }
 
-        /* Buttons */
+        /* Responsive Buttons */
         .lux-btn {
-            background: rgba(230, 197, 71, 0.05);
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            background: rgba(230, 197, 71, 0.08);
             border: 1px solid var(--gold-primary);
             color: var(--gold-primary);
-            padding: 18px 45px;
+            padding: 18px;
             font-size: 0.8rem;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: var(--transition);
-            margin: 10px;
-            backdrop-filter: blur(10px);
+            margin: 15px auto;
+            border-radius: 4px;
+            transition: 0.3s;
         }
 
-        .lux-btn:hover {
-            background: var(--gold-primary);
-            color: var(--navy-deep);
-            box-shadow: 0 0 40px rgba(230, 197, 71, 0.3);
-            transform: translateY(-3px);
-        }
+        .lux-btn:active { background: var(--gold-primary); color: var(--navy-deep); }
 
-        /* Grid & Cards */
         .subject-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
         }
+
+        @media (min-width: 600px) { .subject-grid { grid-template-columns: 1fr 1fr; } }
 
         .subject-card {
             background: var(--glass);
-            border: 1px solid rgba(230, 197, 71, 0.15);
-            padding: 50px 30px;
-            backdrop-filter: blur(20px);
-            transition: var(--transition);
-            cursor: pointer;
+            border: 1px solid rgba(230, 197, 71, 0.2);
+            padding: 25px 15px;
             text-align: center;
-            border-radius: 2px;
-            animation: fadeIn 0.8s ease-out;
+            border-radius: 8px;
         }
 
-        .subject-card:hover {
-            border-color: var(--gold-primary);
-            background: rgba(230, 197, 71, 0.08);
-            transform: translateY(-10px);
-        }
-
-        .subject-card h3 { 
-            font-family: 'Playfair Display', serif; 
-            color: var(--gold-primary);
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
+        .subject-card h3 { font-family: 'Playfair Display', serif; color: var(--gold-primary); font-size: 1.1rem; }
 
         .question-card {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            margin-bottom: 30px;
-            border-left: 2px solid var(--gold-primary);
-            animation: fadeIn 0.5s forwards;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--gold-primary);
+            border-radius: 4px;
         }
 
         .options label {
             display: block;
-            padding: 18px;
-            margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
-            transition: 0.3s;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
-        .options label:hover { 
-            background: rgba(230, 197, 71, 0.1); 
-            border-color: var(--gold-primary);
-        }
-
-        /* MATCH THE PAIR - FULL COLOR MATCH */
-        .match-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
-        .match-table td { padding: 10px 20px; }
-        
-        select.match-select {
-            width: 100%;
+        /* Match Pair Mobile View */
+        .match-row {
+            margin-bottom: 25px;
             padding: 15px;
-            /* Matches the deep indigo section of the background */
-            background-color: #1a1e4d; 
-            color: var(--gold-primary);
-            border: 1px solid rgba(230, 197, 71, 0.3);
-            border-radius: 0;
-            outline: none;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23e6c547' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 20px center;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
         }
 
-        .back-btn {
-            position: fixed;
-            top: 40px;
-            left: 40px;
-            color: var(--gold-primary);
-            font-size: 0.7rem;
-            letter-spacing: 4px;
-            z-index: 1000;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
+        .match-row label { color: var(--gold-primary); display: block; margin-bottom: 10px; font-weight: 600; }
 
-        .hidden { display: none !important; }
-
-        .result-box {
-            text-align: center;
+        select {
+            width: 100%;
+            padding: 14px;
+            background: #1a1e4d;
+            color: #fff;
             border: 1px solid var(--gold-primary);
-            padding: 100px 50px;
-            background: var(--glass);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml,...");
         }
 
-        .score-big {
-            font-size: 7rem;
-            font-family: 'Playfair Display', serif;
-            color: var(--gold-primary);
-        }
+        .back-btn { padding: 20px; color: var(--gold-primary); text-transform: uppercase; font-size: 0.75rem; cursor: pointer; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="back-btn hidden" onclick="goHome()">← Back to Menu</div>
+<div class="back-btn hidden" id="global-back" onclick="goHome()">← Main Menu</div>
 
 <div id="home" class="container">
     <header>
-        <h1 class="fade-in">Elite Academy</h1>
-        <p class="tagline fade-in">T.Y.B.Com Luxury Learning Suite</p>
-        <div style="margin-top:60px;" class="fade-in">
-            <button class="lux-btn" onclick="showSection('mcq-section')">MCQ Assessment</button>
-            <button class="lux-btn" onclick="showSection('match-section')">Matrix Matching</button>
-            <button class="lux-btn" onclick="showDashboard()">Dashboard</button>
+        <h1>Elite B.Com</h1>
+        <p class="tagline">Mobile Prep Suite</p>
+        <div style="margin-top:40px;">
+            <button class="lux-btn" onclick="showSection('mcq-section')">MCQ Practice</button>
+            <button class="lux-btn" onclick="showSection('match-section')">Match the Pairs</button>
         </div>
     </header>
 </div>
 
 <div id="mcq-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem; letter-spacing:4px;">Assessments</h2>
     <div class="subject-grid" id="mcq-grid"></div>
 </div>
 
 <div id="match-section" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem; letter-spacing:4px;">Connect Logic</h2>
     <div class="subject-grid" id="match-grid"></div>
 </div>
 
 <div id="practice-area" class="container hidden">
-    <h2 id="practice-title" style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; margin-bottom:3rem; font-size:2.2rem;"></h2>
+    <h2 id="practice-title" style="text-align:center; color:var(--gold-primary); margin-bottom:25px;"></h2>
     <form id="quiz-form"></form>
-    <div style="text-align:center; margin-top:50px;">
-        <button class="lux-btn" onclick="submitQuiz()">Submit Portfolio</button>
-    </div>
+    <button class="lux-btn" onclick="submitQuiz()">Submit Results</button>
 </div>
 
-<div id="result" class="container hidden">
-    <div class="result-box">
-        <h2 style="letter-spacing:10px; color:rgba(255,255,255,0.5);">PERFORMANCE SCORE</h2>
-        <div class="score-big" id="score-display">0/0</div>
-        <p id="percentage" style="font-size:1.5rem; margin-bottom:3rem;"></p>
-        <button class="lux-btn" onclick="goHome()">Return Home</button>
+<div id="result" class="container hidden" style="text-align:center;">
+    <div class="subject-card">
+        <h2 id="score-display" style="font-size:3rem; color:var(--gold-primary);">0/0</h2>
+        <p id="percentage" style="margin:20px 0;"></p>
+        <button class="lux-btn" onclick="goHome()">Finish</button>
     </div>
-</div>
-
-<div id="dashboard" class="container hidden">
-    <h2 style="text-align:center; color:var(--gold-primary); font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:3rem;">Analytics</h2>
-    <div id="scores-list" style="text-align:center; color:var(--gold-soft); font-size:1.2rem;">All systems operational. Subject data synced.</div>
 </div>
 
 <script>
 const mcqData = {
     "Marketing Management II": [
         {q:"Marketing mix consists of ______ P's.",o:["3","4","7","8"],a:"4"},
-        {q:"______ is the process of dividing a market into distinct groups.",o:["Targeting","Positioning","Segmentation","Branding"],a:"Segmentation"},
-        {q:"The path goods move from producer to consumer is ______.",o:["Promotion","Pricing","Distribution","PLC"],a:"Distribution"},
-        {q:"______ is a paid form of non-personal presentation.",o:["Publicity","Sales Promotion","Advertising","Personal Selling"],a:"Advertising"},
-        {q:"Internal factor affecting pricing is ______.",o:["Competition","Demand","Production Cost","Policy"],a:"Production Cost"},
-        {q:"First stage of Product Life Cycle is ______.",o:["Growth","Maturity","Introduction","Decline"],a:"Introduction"},
-        {q:"Relationship marketing is ______ marketing.",o:["Niche","Mass","One-to-one","Direct"],a:"One-to-one"},
-        {q:"Identifying symbol for a product is ______.",o:["Trademark","Brand","Logo","Copyright"],a:"Brand"},
+        {q:"Process of dividing market into groups is ______.",o:["Targeting","Positioning","Segmentation","Branding"],a:"Segmentation"},
+        {q:"Path from producer to consumer is ______.",o:["Promotion","Pricing","Distribution","PLC"],a:"Distribution"},
+        {q:"Paid form of non-personal presentation is ______.",o:["Publicity","Sales Promotion","Advertising"],a:"Advertising"},
+        {q:"Internal factor affecting pricing is ______.",o:["Competition","Demand","Production Cost"],a:"Production Cost"},
+        {q:"First stage of PLC is ______.",o:["Growth","Maturity","Introduction","Decline"],a:"Introduction"},
+        {q:"Relationship marketing is ______ marketing.",o:["Niche","Mass","One-to-one"],a:"One-to-one"},
+        {q:"Identifying symbol for a product is ______.",o:["Trademark","Brand","Logo"],a:"Brand"},
         {q:"Consumer behavior factors include ______.",o:["Social","Cultural","Psychological","All of these"],a:"All of these"},
-        {q:"Product line count is called Product ______.",o:["Width","Depth","Length","Consistency"],a:"Width"},
-        {q:"Skimming pricing is for ______ products.",o:["Old","Low-cost","New","Local"],a:"New"},
-        {q:"The '4Ps' was popularized by ______.",o:["Kotler","McCarthy","Drucker","Smith"],a:"McCarthy"},
-        {q:"Sales decline happens in ______ stage.",o:["Growth","Decline","Maturity","Intro"],a:"Decline"},
-        {q:"Creating a product image in mind is ______.",o:["Segmentation","Positioning","Branding","Promotion"],a:"Positioning"},
-        {q:"Face-to-face buyer communication is ______.",o:["Advertising","PR","Personal Selling","E-Marketing"],a:"Personal Selling"}
+        {q:"Product line count is called Product ______.",o:["Width","Depth","Length"],a:"Width"},
+        {q:"Skimming pricing is for ______ products.",o:["Old","Low-cost","New"],a:"New"},
+        {q:"The '4Ps' was popularized by ______.",o:["Kotler","McCarthy","Drucker"],a:"McCarthy"},
+        {q:"Sales decline happens in ______ stage.",o:["Growth","Decline","Maturity"],a:"Decline"},
+        {q:"Creating a product image in mind is ______.",o:["Segmentation","Positioning","Branding"],a:"Positioning"},
+        {q:"Face-to-face buyer communication is ______.",o:["Advertising","PR","Personal Selling"],a:"Personal Selling"}
     ],
     "Marketing Management III": [
-        {q:"Under ______ element agreements of buy and sales are done.",o:["E-mail","E-filing","E-Governance","E-Commerce"],a:"E-Commerce"},
-        {q:"______ exchange is an important measure through social media.",o:["Printing","Design","Message","Medium"],a:"Message"},
-        {q:"Marketing ______ is systematic planning and policy.",o:["Environment","Control","Audit","News"],a:"Control"},
-        {q:"Customer is king and satisfied if he gets ______.",o:["Satisfaction","Loyalty","Relation","Growth"],a:"Satisfaction"},
-        {q:"Flexibility in daily routine is due to ______.",o:["Environment","Control","Planning","Organisation"],a:"Organisation"},
-        {q:"Ad is complete if there is element ______.",o:["Design","Media","Printing","Trademark"],a:"Design"},
-        {q:"Analytical study of strategy is Marketing ______.",o:["Audit","Planning","Control","Organisation"],a:"Audit"},
-        {q:"After sales service is part of ______ component.",o:["Person","Product","Quality","Industry"],a:"Quality"},
-        {q:"Marketing Audit is done by ______ Auditor.",o:["Business","Marketing","Financial","Cost"],a:"Marketing"},
-        {q:"Media depending on Internet use is ______.",o:["Press","Audio-video","Social Media","Earned"],a:"Social Media"},
-        {q:"Effective technique of market control is ______.",o:["Cost analysis","Ratio Analysis","Variance","SWOC"],a:"SWOC"},
-        {q:"Message exchange is important in social ______.",o:["Printing","Design","Message","Media"],a:"Media"},
-        {q:"Online buying & selling is ______.",o:["E-mail","Website","E-Business","E-Commerce"],a:"E-Commerce"},
-        {q:"Component that must be attractive for advertising is ______.",o:["Design","Media","Printing","Trademark"],a:"Design"},
-        {q:"Customer satisfaction results in ______.",o:["Satisfaction","Loyalty","Relation","Growth"],a:"Satisfaction"}
+        {q:"Electronic buy/sell agreements fall under ______.",o:["E-mail","E-filing","E-Commerce"],a:"E-Commerce"},
+        {q:"Measure used through social media is ______.",o:["Printing","Design","Message"],a:"Message"},
+        {q:"Systematic planning and policy is Marketing ______.",o:["Environment","Control","Audit"],a:"Control"},
+        {q:"The customer is king if they get ______.",o:["Satisfaction","Loyalty","Relation"],a:"Satisfaction"},
+        {q:"Flexibility in daily routine is due to Marketing ______.",o:["Control","Planning","Organisation"],a:"Organisation"},
+        {q:"Ad is complete with element ______.",o:["Design","Media","Printing"],a:"Design"},
+        {q:"Analytical study of strategy is Marketing ______.",o:["Audit","Planning","Control"],a:"Audit"},
+        {q:"After sales service is part of ______ component.",o:["Person","Product","Quality"],a:"Quality"},
+        {q:"Audit is done by ______ Auditor.",o:["Business","Marketing","Financial"],a:"Marketing"},
+        {q:"Internet-dependent media is ______.",o:["Press","Audio-video","Social Media"],a:"Social Media"},
+        {q:"Market control technique is ______.",o:["Cost analysis","Ratio Analysis","SWOC"],a:"SWOC"},
+        {q:"Message exchange is vital in social ______.",o:["Printing","Design","Media"],a:"Media"},
+        {q:"Online buying & selling is ______.",o:["E-mail","Website","E-Commerce"],a:"E-Commerce"},
+        {q:"Attractive element for advertising is ______.",o:["Design","Media","Trademark"],a:"Design"},
+        {q:"Customer satisfaction leads to ______.",o:["Loyalty","Conflict","Loss"],a:"Loyalty"}
     ],
     "Business Economics": [
-        {q:"The Human development index released from ______.",o:["1947","1950","1990","2014"],a:"1990"},
-        {q:"F.D.I. stands for ______.",o:["Foreign direct investment","Intervention","Domestic","Fast"],a:"Foreign direct investment"},
-        {q:"India is the founder member of ______.",o:["ASIAN","SAARC","USA","UAE"],a:"SAARC"},
-        {q:"International trade means ______.",o:["Between regions","Between countries","Between provinces","Between states"],a:"Between countries"},
-        {q:"The Multidimensional Poverty Index (M.P.I) is by ______.",o:["World Bank","Economic Forum","U.N.D.P.","Asian bank"],a:"U.N.D.P."},
-        {q:"Systematic record of economic transactions is ______.",o:["Balance of Trade","Transactions","Budget","Balance of payments"],a:"Balance of payments"},
-        {q:"Organisation publishes HDI report is ______.",o:["World Bank","Economic Forum","IMF","UNDP"],a:"UNDP"},
-        {q:"F.D.I stands for ______.",o:["Direct Index","Direct Investment","Future domestic","Dev index"],a:"Direct Investment"},
-        {q:"IMF was established in ______.",o:["1944","1945","1996","1995"],a:"1945"},
-        {q:"Currently ______ countries are members of SAARC.",o:["11","9","8","10"],a:"8"},
-        {q:"Special Drawing Rights (SDR) is related to ______.",o:["World Bank","IMF","RBI","UNO"],a:"IMF"},
-        {q:"SAARC headquarters is located in ______.",o:["Kathmandu","Manila","New Delhi","Mumbai"],a:"Kathmandu"},
-        {q:"Govt policy for import-export is ______.",o:["Financial","Monetary","Foreign trade","Fiscal"],a:"Foreign trade"},
-        {q:"India is founder member of ______.",o:["E.U.","U.S.A.","OPEC","BRICS"],a:"BRICS"},
-        {q:"Engine of economic development is ______.",o:["Domestic trade","National Income","National trade","International trade"],a:"International trade"}
+        {q:"HDI index was released in ______.",o:["1947","1950","1990","2014"],a:"1990"},
+        {q:"F.D.I. stands for ______.",o:["Direct Investment","Intervention","Domestic"],a:"Direct Investment"},
+        {q:"India is a founder member of ______.",o:["ASIAN","SAARC","USA"],a:"SAARC"},
+        {q:"International trade is between ______.",o:["Regions","Countries","Provinces"],a:"Countries"},
+        {q:"The MPI index is released by ______.",o:["World Bank","U.N.D.P.","Asian bank"],a:"U.N.D.P."},
+        {q:"Systematic record of transactions is ______.",o:["BOP","BOT","Budget"],a:"BOP"},
+        {q:"Organisation publishing HDI is ______.",o:["World Bank","IMF","UNDP"],a:"UNDP"},
+        {q:"IMF established in ______.",o:["1944","1945","1996"],a:"1945"},
+        {q:"Countries in SAARC are ______.",o:["11","9","8"],a:"8"},
+        {q:"SDR is related to ______.",o:["World Bank","IMF","RBI"],a:"IMF"},
+        {q:"SAARC HQ is in ______.",o:["Kathmandu","Manila","Mumbai"],a:"Kathmandu"},
+        {q:"Import-export policy is ______.",o:["Financial","Monetary","Foreign trade"],a:"Foreign trade"},
+        {q:"India founded ______.",o:["E.U.","OPEC","BRICS"],a:"BRICS"},
+        {q:"Engine of economic development is ______.",o:["Domestic trade","National trade","International trade"],a:"International trade"},
+        {q:"Global trade involves ______ currencies.",o:["Single","Multiple","Local"],a:"Multiple"}
     ],
     "Advanced Accounting II": [
-        {q:"Stock Turnover Ratio is a ______ Ratio.",o:["Liquidity","Turnover","Solvency","Profitability"],a:"Turnover"},
-        {q:"Foreign country branch is called ______.",o:["Domestic","Foreign","Home","Inland"],a:"Foreign"},
-        {q:"Co-op transfer profit to Reserve fund at ______.",o:["20%","25%","30%","35%"],a:"25%"},
-        {q:"Current Assets + Current Liabilities = ______.",o:["Current","Liquid","Quick","Working"],a:"Quick"},
-        {q:"Co-op society members have ______ liability.",o:["Unlimited","Joint","Limited","Several"],a:"Limited"},
-        {q:"Full form of AI is ______.",o:["Artificial Intelligence","Artificially Intel","Advance Info","Actual Int"],a:"Artificial Intelligence"},
-        {q:"Formation not for profit is ______.",o:["Co-op","Public","HUF","Private"],a:"Co-op"},
-        {q:"Dividend on shares comes to ______ side of P&L.",o:["Income","Expenditure","Interest","Loss"],a:"Income"},
-        {q:"Small system branch is also known as ______.",o:["Foreign","Dependent","Independent","None"],a:"Dependent"},
-        {q:"Branch a/c is prepared to find ______.",o:["Profit/Loss","Finance","Assets","None"],a:"Profit/Loss"},
-        {q:"Petty Cash Book maintains ______.",o:["Large expenses","Small expenses","Banking","Sales"],a:"Small expenses"},
-        {q:"Debt to equity relates to ______.",o:["Current assets","Liabilities","Owner equity","None"],a:"Owner equity"},
-        {q:"A quick ratio of ______ is ideal.",o:["1:1","2:1","1:2","3:1"],a:"1:1"},
-        {q:"Cost of Goods Sold / Avg Stock = ______.",o:["Debt","Stock Turnover","Margin","Ratio"],a:"Stock Turnover"},
-        {q:"Working capital is Current Assets minus ______.",o:["Fixed Assets","Current Liabilities","Long debt","Stock"],a:"Current Liabilities"}
+        {q:"Stock Turnover is a ______ Ratio.",o:["Liquidity","Turnover","Solvency"],a:"Turnover"},
+        {q:"Foreign country branch is ______.",o:["Domestic","Foreign","Home"],a:"Foreign"},
+        {q:"Co-op society profit transfer to Reserve is ______.",o:["20%","25%","30%"],a:"25%"},
+        {q:"Asset + Liability ratio check is ______.",o:["Current","Liquid","Quick"],a:"Quick"},
+        {q:"Co-op society members have ______ liability.",o:["Unlimited","Joint","Limited"],a:"Limited"},
+        {q:"Full form of AI is ______.",o:["Artificial Intelligence","Advance Info","Actual Int"],a:"Artificial Intelligence"},
+        {q:"Formation NOT for profit is ______.",o:["Co-op","Public","HUF"],a:"Co-op"},
+        {q:"Dividend on shares is on ______ side of P&L.",o:["Income","Expenditure","Interest"],a:"Income"},
+        {q:"Small system branch is also called ______.",o:["Foreign","Dependent","Independent"],a:"Dependent"},
+        {q:"Branch a/c finds ______.",o:["Profit/Loss","Finance","Assets"],a:"Profit/Loss"},
+        {q:"Petty Cash Book records ______.",o:["Large expenses","Small expenses","Banking"],a:"Small expenses"},
+        {q:"Debt to equity relates to ______.",o:["Liabilities","Owner equity","Stock"],a:"Owner equity"},
+        {q:"Ideal quick ratio is ______.",o:["1:1","2:1","1:2"],a:"1:1"},
+        {q:"Cost of Goods Sold / Avg Stock = ______.",o:["Debt","Stock Turnover","Margin"],a:"Stock Turnover"},
+        {q:"Working capital is Current Assets minus ______.",o:["Fixed Assets","Current Liabilities","Stock"],a:"Current Liabilities"}
     ],
     "Business Regulatory Framework II": [
         {q:"Person who makes the Bill is ______.",o:["Payee","Drawee","Drawer"],a:"Drawer"},
-        {q:"Digital signature suspension section ______.",o:["35","36","37"],a:"37"},
+        {q:"Digital signature suspension section is ______.",o:["35","36","37"],a:"37"},
         {q:"CPA 2019 came into force in ______.",o:["20 July 2020","1 April","31 Dec"],a:"20 July 2020"},
-        {q:"Copyright for photo is ______ years.",o:["40","50","60"],a:"60"},
-        {q:"Forum section is ______.",o:["35","37","38"],a:"38"},
+        {q:"Photo copyright lasts ______ years.",o:["40","50","60"],a:"60"},
+        {q:"Consumer Forum section is ______.",o:["35","37","38"],a:"38"},
         {q:"Bill on banker is ______.",o:["Note","Cheque","Bill"],a:"Cheque"},
         {q:"Negotiable Act passed in ______.",o:["1881","1872","1930"],a:"1881"},
         {q:"Electronic media trade is ______.",o:["E-Commerce","Comm","Mgmt"],a:"E-Commerce"},
         {q:"Consumer day is ______.",o:["15 March","16","18"],a:"15 March"},
-        {q:"Creator right for literature is ______.",o:["Trademark","Patent","Copyright"],a:"Copyright"},
+        {q:"Literature right is ______.",o:["Trademark","Patent","Copyright"],a:"Copyright"},
         {q:"Producer protection act passed in ______.",o:["1999","2000","1998"],a:"1999"},
         {q:"Cybercrime is theft of ______.",o:["Personal info","Furniture","Books"],a:"Personal info"},
-        {q:"Valid document must be in ______.",o:["Oral","Writing","Promise"],a:"Writing"},
+        {q:"Document must be in ______.",o:["Oral","Writing","Promise"],a:"Writing"},
         {q:"Software contract is ______.",o:["Proposal","Acceptance","E-Contract"],a:"E-Contract"},
         {q:"Buyer of goods is ______.",o:["Customer","Salesman","Producer"],a:"Customer"}
     ],
     "Industrial Psychology": [
-        {q:"Psychology is a ______ word.",o:["Latin","Greek","French","German"],a:"Greek"},
-        {q:"Father of scientific management ______.",o:["Taylor","Mayo","Maslow","Weber"],a:"Taylor"},
-        {q:"Hawthorne experiments by ______.",o:["Mayo","Taylor","Fayol","Weber"],a:"Mayo"},
-        {q:"Industrial psychology is ______ science.",o:["Pure","Applied","Social","Natural"],a:"Applied"},
-        {q:"Internal activation of behavior is ______.",o:["Learning","Perception","Motivation","Attitude"],a:"Motivation"},
-        {q:"Collecting job info is Job ______.",o:["Analysis","Description","Specs","Eval"],a:"Analysis"},
-        {q:"Munsterberg book year ______.",o:["1910","1913","1920","1930"],a:"1913"},
-        {q:"Great Person theory relates to ______.",o:["Motivation","Leadership","Learning","Personality"],a:"Leadership"},
-        {q:"Feeling of tiredness is ______.",o:["Stress","Boredom","Fatigue","Anxiety"],a:"Fatigue"},
-        {q:"Recording behavior is ______.",o:["Test","Interview","Rating","Observation"],a:"Observation"},
-        {q:"Maslow's highest hierarchy is ______.",o:["Social","Safety","Self-Actualization","Esteem"],a:"Self-Actualization"},
-        {q:"Group forces are called ______.",o:["Dynamics","Conflict","Norms","Cohesion"],a:"Dynamics"},
-        {q:"Accident study is ______.",o:["Control","Prevention","Proneness","Analysis"],a:"Proneness"},
-        {q:"Selection is a ______ process.",o:["Positive","Negative","Neutral","Fast"],a:"Negative"},
-        {q:"Training is a ______ process.",o:["Short-term","One-time","Continuous","Final"],a:"Continuous"}
+        {q:"Psychology is a ______ word.",o:["Latin","Greek","French"],a:"Greek"},
+        {q:"Father of scientific management is ______.",o:["Taylor","Mayo","Maslow"],a:"Taylor"},
+        {q:"Hawthorne experiments by ______.",o:["Mayo","Taylor","Fayol"],a:"Mayo"},
+        {q:"Industrial psychology is ______ science.",o:["Pure","Applied","Social"],a:"Applied"},
+        {q:"Internal activation of behavior is ______.",o:["Learning","Perception","Motivation"],a:"Motivation"},
+        {q:"Collecting job info is Job ______.",o:["Analysis","Description","Specs"],a:"Analysis"},
+        {q:"Munsterberg book year ______.",o:["1910","1913","1920"],a:"1913"},
+        {q:"Great Person theory is for ______.",o:["Motivation","Leadership","Learning"],a:"Leadership"},
+        {q:"Feeling of tiredness is ______.",o:["Stress","Boredom","Fatigue"],a:"Fatigue"},
+        {q:"Recording behavior is ______.",o:["Test","Interview","Observation"],a:"Observation"},
+        {q:"Maslow's highest level is ______.",o:["Social","Safety","Self-Actualization"],a:"Self-Actualization"},
+        {q:"Group forces are called ______.",o:["Dynamics","Conflict","Norms"],a:"Dynamics"},
+        {q:"Accident study is ______.",o:["Control","Prevention","Proneness"],a:"Proneness"},
+        {q:"Selection is a ______ process.",o:["Positive","Negative","Neutral"],a:"Negative"},
+        {q:"Training is a ______ process.",o:["Short-term","One-time","Continuous"],a:"Continuous"}
     ]
 };
 
 const matchData = {
     "Business Economics": [
         ["I.M.F.", "G.D.P.", "World Bank", "EXIM policy", "Current Account"],
-        ["International Monetary Fund", "Gross Domestic Product", "International Bank for Reconstruction and Development", "Foreign Trade Policy", "Balance of Trade"]
+        ["International Monetary Fund", "Gross Domestic Product", "IBRD", "Foreign Trade Policy", "Balance of Trade"]
     ]
 };
 
@@ -362,56 +289,48 @@ window.onload = function() {
     const matchGrid = document.getElementById('match-grid');
 
     subjects.forEach(sub => {
-        mcqGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'mcq')"><h3>${sub}</h3><p style="color:var(--gold-primary); font-size:0.7rem; letter-spacing:2px;">15 QUESTIONS ACTIVE</p></div>`;
-        const mStatus = matchData[sub] ? "ACTIVE" : "COMING SOON";
-        matchGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'match')"><h3>${sub}</h3><p style="color:var(--gold-primary); font-size:0.7rem; letter-spacing:2px;">MODULE: ${mStatus}</p></div>`;
+        mcqGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'mcq')"><h3>${sub}</h3></div>`;
+        matchGrid.innerHTML += `<div class="subject-card" onclick="startPractice('${sub}', 'match')"><h3>${sub}</h3></div>`;
     });
 };
 
 function showSection(id) {
     document.querySelectorAll('.container').forEach(d => d.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
-    document.querySelector('.back-btn').classList.toggle('hidden', id === 'home');
+    document.getElementById('global-back').classList.toggle('hidden', id === 'home');
     window.scrollTo(0,0);
 }
 
 function goHome() { showSection('home'); }
 
 function startPractice(subject, type) {
-    currentSubject = subject;
-    currentType = type;
+    currentSubject = subject; currentType = type;
     document.getElementById('practice-title').innerText = subject;
     const form = document.getElementById('quiz-form');
     form.innerHTML = "";
 
     if (type === 'mcq') {
-        const qs = mcqData[subject] || [];
-        qs.forEach((item, i) => {
+        mcqData[subject].forEach((item, i) => {
             const div = document.createElement('div');
             div.className = 'question-card';
-            div.innerHTML = `<p style="font-size:1.2rem; margin-bottom:15px; color:var(--gold-primary)">Q${i+1}. ${item.q}</p><div class="options">`;
-            item.o.forEach(opt => {
-                div.innerHTML += `<label><input type="radio" name="q${i}" value="${opt}" style="margin-right:10px; accent-color:var(--gold-primary)"> ${opt}</label>`;
-            });
-            div.innerHTML += `</div>`;
+            div.innerHTML = `<p><b>Q${i+1}. ${item.q}</b></p><div class="options">` + 
+                item.o.map(opt => `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`).join('') + `</div>`;
+            form.appendChild(div);
+        });
+    } else if (matchData[subject]) {
+        const left = matchData[subject][0];
+        const right = [...matchData[subject][1]].sort(() => Math.random() - 0.5);
+        left.forEach((l, i) => {
+            const div = document.createElement('div');
+            div.className = 'match-row';
+            div.innerHTML = `<label>${l}</label><select class="match-select">
+                <option value="">Select Pair...</option>
+                ${right.map(r => `<option value="${r}">${r}</option>`).join('')}
+            </select>`;
             form.appendChild(div);
         });
     } else {
-        if (!matchData[subject]) {
-            form.innerHTML = "<p style='text-align:center; padding:50px; color:var(--gold-primary);'>Matching matrix is being synchronized.</p>";
-        } else {
-            const left = matchData[subject][0];
-            const right = [...matchData[subject][1]].sort(() => Math.random() - 0.5);
-            let html = "<div class='question-card'><table class='match-table'>";
-            left.forEach((l, i) => {
-                html += `<tr>
-                    <td style="color:var(--gold-primary); font-weight:600; width:45%">${l}</td>
-                    <td><select class="match-select"><option value=\"\">Select Pair...</option>${right.map(r => `<option value="${r}">${r}</option>`).join('')}</select></td>
-                </tr>`;
-            });
-            html += "</table></div>";
-            form.innerHTML = html;
-        }
+        form.innerHTML = "<p style='text-align:center; padding:40px;'>Module under construction.</p>";
     }
     showSection('practice-area');
 }
@@ -422,21 +341,18 @@ function submitQuiz() {
         const qs = mcqData[currentSubject];
         total = qs.length;
         qs.forEach((item, i) => {
-            const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            if (selected && selected.value === item.a) score++;
+            const sel = document.querySelector(`input[name="q${i}"]:checked`);
+            if (sel && sel.value === item.a) score++;
         });
     } else if (matchData[currentSubject]) {
-        const selects = document.querySelectorAll('.match-select');
-        total = selects.length;
-        selects.forEach((sel, i) => { if (sel.value === matchData[currentSubject][1][i]) score++; });
+        const sels = document.querySelectorAll('.match-select');
+        total = sels.length;
+        sels.forEach((sel, i) => { if (sel.value === matchData[currentSubject][1][i]) score++; });
     }
     document.getElementById('score-display').innerText = `${score}/${total}`;
-    document.getElementById('percentage').innerText = `${((score/total)*100).toFixed(0)}% SUCCESS RATE`;
+    document.getElementById('percentage').innerText = `${((score/total)*100).toFixed(0)}% Score`;
     showSection('result');
 }
-
-function showDashboard() { showSection('dashboard'); }
 </script>
 </body>
 </html>
-
