@@ -10,6 +10,7 @@
             --gold: #d4af37;
             --gold-light: #f1d592;
             --bg-dark: #0a0a12;
+            --bg-gradient: radial-gradient(circle at top right, #1a1a2e, #0a0a12);
             --glass: rgba(255, 255, 255, 0.03);
             --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
@@ -17,7 +18,8 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         
         body {
-            background: radial-gradient(circle at top right, #1a1a2e, #0a0a12);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
             color: #e0e0e0;
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
@@ -103,8 +105,10 @@
             margin-bottom: 25px;
             border-left: 3px solid var(--gold);
             animation: fadeIn 0.4s ease-out;
+            backdrop-filter: blur(5px);
         }
 
+        /* MCQ Options */
         .options label {
             display: block;
             padding: 15px;
@@ -113,9 +117,33 @@
             cursor: pointer;
             transition: 0.3s;
         }
-
         .options label:hover { background: rgba(255,255,255,0.05); }
-        .options input { margin-right: 10px; accent-color: var(--gold); }
+
+        /* MATCH THE PAIR STYLING - MATCHED TO BACKGROUND */
+        .match-table { width: 100%; border-collapse: collapse; }
+        .match-table td { 
+            padding: 15px; 
+            border-bottom: 1px solid rgba(212,175,55,0.1); 
+        }
+        
+        select.match-select {
+            width: 100%;
+            padding: 12px;
+            /* Exactly matching the page background */
+            background-color: #0f101d; 
+            color: #fff;
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+
+        select.match-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212,175,55,0.2);
+        }
 
         .back-btn {
             position: fixed;
@@ -317,10 +345,10 @@ window.onload = function() {
         mcqGrid.innerHTML += `
             <div class="subject-card fade-in" onclick="startPractice('${sub}', 'mcq')">
                 <h3>${sub}</h3>
-                <p style="color:#888; letter-spacing:1px; font-size:0.75rem;">15 QUESTIONS AVAILABLE</p>
+                <p style="color:#888; letter-spacing:1px; font-size:0.75rem;">15 MODULES AVAILABLE</p>
             </div>`;
         
-        const isAvail = matchData[sub] ? "AVAILABLE" : "COMING SOON";
+        const isAvail = matchData[sub] ? "AVAILABLE" : "COMMING SOON";
         matchGrid.innerHTML += `
             <div class="subject-card fade-in" onclick="startPractice('${sub}', 'match')">
                 <h3>${sub}</h3>
@@ -363,17 +391,17 @@ function startPractice(subject, type) {
         });
     } else {
         if (!matchData[subject]) {
-            form.innerHTML = "<p style='text-align:center; padding:50px; color:#888;'>Relational modules for this subject are currently being curated.</p>";
+            form.innerHTML = "<p style='text-align:center; padding:50px; color:#888;'>This module is under development.</p>";
         } else {
             const left = matchData[subject][0];
             const right = [...matchData[subject][1]].sort(() => Math.random() - 0.5);
-            let html = "<div class='question-card'><table style='width:100%'>";
+            let html = "<div class='question-card'><table class='match-table'>";
             left.forEach((l, i) => {
                 html += `<tr>
-                    <td style="padding:15px; color:var(--gold); border-bottom:1px solid rgba(255,255,255,0.05);">${l}</td>
-                    <td style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.05);">
-                        <select style="width:100%; padding:10px; background:#111; color:#fff; border:1px solid var(--gold);">
-                            <option value="">Select...</option>
+                    <td style="color:var(--gold); font-weight:600;">${l}</td>
+                    <td>
+                        <select class="match-select">
+                            <option value=\"\">Select Pair...</option>
                             ${right.map(r => `<option value="${r}">${r}</option>`).join('')}
                         </select>
                     </td>
@@ -397,7 +425,7 @@ function submitQuiz() {
             if (selected && selected.value === item.a) score++;
         });
     } else if (matchData[currentSubject]) {
-        const selects = document.querySelectorAll('select');
+        const selects = document.querySelectorAll('.match-select');
         total = selects.length;
         selects.forEach((sel, i) => {
             if (sel.value === matchData[currentSubject][1][i]) score++;
@@ -410,7 +438,7 @@ function submitQuiz() {
 
 function showDashboard() {
     const list = document.getElementById('scores-list');
-    list.innerHTML = "<p style='text-align:center; color:#888;'>All 6 subjects are active. Scores will persist for the current session.</p>";
+    list.innerHTML = "<p style='text-align:center; color:#888;'>Progress Tracking Active for all 6 subjects.</p>";
     showSection('dashboard');
 }
 </script>
