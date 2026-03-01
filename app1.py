@@ -26,12 +26,12 @@ def scale_measure(s, factor):
     return u.strip() or s
 
 # ─── Page & Theme ───────────────────────────────────────���────────────
-st.set_page_config(
-    page_title="Culinary Craft • Professional Recipe Assistant",
-    layout="wide",
-    initial_sidebar_state="expanded",
-    menu_items={'About': "Professional Recipe Assistant v1.0"}
-)
+# st.set_page_config(
+#     page_title="Culinary Craft • Professional Recipe Assistant",
+#     layout="wide",
+#     initial_sidebar_state="expanded",
+#     menu_items={'About': "Professional Recipe Assistant v1.0"}
+# )
 
 # ─── Advanced CSS Styling ────────────────────────────────────────────
 st.markdown("""
@@ -684,4 +684,5 @@ if st.button("🎯 Get Recipe", type="primary", use_container_width=True):
                 © 2024 Culinary Craft • Professional Recipe Assistant
             </p>
         </div>
+
         """, unsafe_allow_html=True)
