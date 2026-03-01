@@ -119,56 +119,34 @@ if st.session_state.page == "home":
         if st.button("📝 B.Com MCQs", use_container_width=True):
             st.session_state.page = "mcq_bank"
 
-# ================= RAMZAN SPECIAL (Integrated) =================
+# ================= RAMZAN SPECIAL (Integrated App1) =================
 elif st.session_state.page == "ramzan_special":
-    # 1. Internal Navigation
-    if st.button("⬅ Back to Home"):
+    # 1. Back Button with a consistent style
+    if st.button("⬅ Back to Home", key="ramzan_back"):
         st.session_state.page = "home"
         st.rerun()
 
-    st.markdown('<div class="header"><h1>🌙 Ramzan Special Recipes</h1></div>', unsafe_allow_html=True)
-
-    # 2. Add the Recipe Logic directly here
-    @st.cache_data
-    def load_ramzan_data():
-        try:
-            # Ensure this file is uploaded to your GitHub repository
-            df = pd.read_csv("mealdb_dataset_with_flag.csv")
-            df.columns = df.columns.str.lower().str.strip()
-            return df
-        except FileNotFoundError:
-            return None
-
-    recipe_df = load_ramzan_data()
-
-    if recipe_df is not None:
-        col1, col2 = st.columns(2)
-        with col1:
-            veg_type = st.selectbox("Dietary Preference", sorted(recipe_df['veg_flag'].unique()))
-        
-        filtered = recipe_df[recipe_df['veg_flag'] == veg_type]
-        
-        with col2:
-            dish_choice = st.selectbox("Select Recipe", sorted(filtered['strmeal'].unique()))
-
-        if st.button("📖 View Recipe Details", use_container_width=True):
-            recipe_row = filtered[filtered['strmeal'] == dish_choice].iloc[0]
+    # 2. Recipe App Logic
+    try:
+        # Load app1.py content
+        with open("app1.py", "r", encoding="utf-8") as f:
+            lines = f.readlines()
             
-            st.markdown(f"## {recipe_row['strmeal']}")
-            st.image(recipe_row['strmealthumb'], width=400)
+            # CRITICAL: Filter out st.set_page_config to prevent crashes
+            # Streamlit only allows one set_page_config per app run.
+            cleaned_code = "".join([
+                line for line in lines 
+                if "st.set_page_config" not in line and "import streamlit" not in line
+            ])
             
-            st.subheader("🥘 Ingredients")
-            # Logic to display ingredients (stringredient1 to 20)
-            for i in range(1, 21):
-                ing = recipe_row.get(f'stringredient{i}', '')
-                meas = recipe_row.get(f'strmeasure{i}', '')
-                if str(ing).strip() and str(ing) != 'nan':
-                    st.write(f"- {meas} {ing}")
-
-            st.subheader("👨‍🍳 Instructions")
-            st.write(recipe_row['strinstructions'])
-    else:
-        st.error("Error: 'mealdb_dataset_with_flag.csv' not found. Please upload it to GitHub.")
+            # 3. Execute the recipe app logic
+            # This allows app1.py to use the dataset 'mealdb_dataset_with_flag.csv'
+            exec(cleaned_code)
+            
+    except FileNotFoundError:
+        st.error("⚠️ Error: 'app1.py' was not found in your directory. Please upload it to GitHub.")
+    except Exception as e:
+        st.error(f"❌ Could not load Ramzan Special: {e}")
 
 # ================= IMAGE TO PDF =================
 elif st.session_state.page == "convert":
@@ -233,5 +211,6 @@ elif st.session_state.page == "mcq_bank":
 
 # ================= FOOTER =================
 st.markdown(f'<div class="email">📧 Contact: {EMAIL}</div>', unsafe_allow_html=True)
+
 
 
