@@ -121,24 +121,25 @@ if st.session_state.page == "home":
 
 # ================= RAMZAN SPECIAL (Integrated App1) =================
 elif st.session_state.page == "ramzan_special":
-    st.markdown('<div class="header"><h1>🌙 Ramzan Special</h1></div>', unsafe_allow_html=True)
-    
+    # 1. Back Button
     if st.button("⬅ Back to Home"):
         st.session_state.page = "home"
         st.rerun()
 
-    # You can either paste the content of app1.py here
-    # OR if app1.py is just a UI, you can display it.
-    st.info("Welcome to the Ramzan Special Section!")
-    
-    # Example: If app1.py was your Recipe/Culinary app:
+    # 2. Recipe App Logic
     try:
-        # This will look for your app1.py file and run its content internally
-        exec(open("app1.py").read())
+        # We wrap the execution to ensure the local directory is recognized
+        with open("app1.py", encoding="utf-8") as f:
+            code = f.read()
+            # We skip the set_page_config if it still exists in the file
+            if "st.set_page_config" in code:
+                st.warning("Note: Running integrated recipe module.")
+            exec(code)
+            
     except FileNotFoundError:
-        st.error("The file 'app1.py' was not found in your directory.")
+        st.error("The file 'app1.py' was not found! Make sure it is uploaded to GitHub.")
     except Exception as e:
-        st.error(f"Error loading Ramzan Special: {e}")
+        st.error(f"Could not load recipes: {e}")
 
 # ================= IMAGE TO PDF =================
 elif st.session_state.page == "convert":
@@ -203,3 +204,4 @@ elif st.session_state.page == "mcq_bank":
 
 # ================= FOOTER =================
 st.markdown(f'<div class="email">📧 Contact: {EMAIL}</div>', unsafe_allow_html=True)
+
