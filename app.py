@@ -107,7 +107,7 @@ if st.session_state.page == "home":
             st.session_state.page = "exam"
     with col3:
         # Changed to internal page routing
-        if st.button("🌙 Ramzan Spc", use_container_width=True):
+        if st.button("Dish-Pro", use_container_width=True):
             st.session_state.page = "ramzan_special"
     with col4:
         if st.button("🧠 Aptitude Test", use_container_width=True):
